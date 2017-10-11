@@ -142,7 +142,7 @@ class SlackActionExecutor(object):
         :rtype: list of dictionaries.
         """
         element = self.element
-        fields_spec = element.fields
+        fields_spec = element.fields or ''
         fields = []
         for item in fields_spec.split('\n'):
             try:
