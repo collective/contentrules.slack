@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="contentrules.slack">
+
+    <!-- Eslack action definition -->
+
+     <adapter factory=".slack.SlackActionExecutor" />
+
+     <browser:page
+       for="plone.app.contentrules.browser.interfaces.IRuleActionAdding"
+       name="plone.actions.Slack"
+       class=".slack.SlackAddFormView"
+       permission="plone.app.contentrules.ManageContentRules"
+       />
+
+     <browser:page
+       for=".slack.ISlackAction"
+       name="edit"
+       class=".slack.SlackEditFormView"
+       permission="plone.app.contentrules.ManageContentRules"
+       />
+
+     <plone:ruleAction
+         name="plone.actions.Slack"
+         title="Post to Slack"
+         description="Send an slack on the triggering object"
+         for="*"
+         event="*"
+         addview="plone.actions.Slack"
+         editview="edit"
+         schema=".slack.ISlackAction"
+         factory=".slack.SlackAction"
+         />
+
+</configure>

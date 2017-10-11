@@ -1,0 +1,45 @@
+<tal:i18n i18n:domain="contentrules.slack">
+  <metal:block use-macro="context/@@ploneform-macros/titlelessform">
+    <metal:block fill-slot="formtop">
+      <p i18n:translate="description-contentrules-slacksub">
+        Contents in the channel, pretext, title, text and fields may be replaced with "$&#123;&#125;" variables from the table on the bottom of this form.
+      </p>
+    </metal:block>
+  </metal:block>
+  <div>
+    <h2 i18n:translate="slack-configuration">Slack Configuration</h2>
+    <p>
+      <span i18n:translate="slack-intro-webhook">Do not forget to</span>
+      <a href="https://my.slack.com/services/new/incoming-webhook/" target="_blank" i18n:translate="slack-create-webhook">create a new webhook</a>
+    </p>
+    <p i18n:translate="slack-documentation">
+      In order to better understand what can be done with this content rule we recommend the reading of the following documentation.
+    </p>
+    <ul>
+      <li><a href="https://api.slack.com/incoming-webhooks" target="_blank" i18n:translate="slack-api-webhook">Webhooks API documentation</a></li>
+      <li><a href="https://api.slack.com/docs/messages/builde" target="_blank" i18n:translate="slack-message-builder">Message builder</a></li>
+    </ul>
+  </div>
+  <div>
+    <h2 i18n:translate="title_contentrules_slacksub">Substitutions</h2>
+    <table class="listing">
+      <thead>
+          <tr>
+              <th i18n:translate="category-contentrules-slacksub">Category</th>
+              <th i18n:translate="variable-contentrules-slacksub">Variable</th>
+              <th i18n:translate="substitution-contentrules-slacksub">Substitution</th>
+          </tr>
+      </thead>
+      <tbody>
+      <tal:block tal:define="sublist here/@@stringinterp_info/substitutionList"
+           tal:repeat="category sublist">
+           <tr tal:repeat="item python:category['items']">
+               <td tal:content="category/category">All Content</td>
+               <td>${<span tal:replace="item/id">url</span>}</td>
+               <td tal:content="item/description">URL</td>
+           </tr>
+      </tal:block>
+      </tbody>
+    </table>
+  </div>
+</tal:i18n>

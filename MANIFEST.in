@@ -1,0 +1,4 @@
+graft src/contentrules
+graft docs
+include *.rst
+global-exclude *.pyc

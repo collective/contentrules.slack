@@ -1,0 +1,6 @@
+[report]
+include =
+    src/contentrules/*
+omit =
+    */test*
+    */upgrades/*
