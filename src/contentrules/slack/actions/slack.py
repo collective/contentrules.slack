@@ -205,15 +205,24 @@ class SlackActionExecutor(object):
     def notify_slack(self, payload):
         """Send message to Slack using ftw.slacker.notify_slack.
 
-        :param payload: Payload to be sent to ftw.slacker.notify_slack
+        :param payload: Payload to be sent to ftw.slacker.notify_slack.
         :type payload: dict
         """
-        notify_slack(**payload)
+        return notify_slack(**payload)
+
+    def get_payload(self):
+        """Return payload to be sent to ftw.slacker.notify_slack.
+
+        :returns: Payload to be sent to ftw.slacker.notify_slack.
+        :rtype: dict
+        """
+        payload = self.get_message_payload()
+        payload.update(self.get_ftw_configuration())
+        return payload
 
     def __call__(self):
         """Execute the action."""
-        payload = self.get_message_payload()
-        payload.update(self.get_ftw_configuration())
+        payload = self.get_payload()
         self.notify_slack(payload)
         return True
 

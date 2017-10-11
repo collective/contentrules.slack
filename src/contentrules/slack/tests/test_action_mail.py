@@ -132,7 +132,8 @@ class TestSlackAction(unittest.TestCase):
             setattr(e, attr, value)
         ex = getMultiAdapter((self.folder, e, DummyEvent(self.doc)), IExecutable)
         with RequestsMock.installed() as requests:
-            ex()
+            payload = ex.get_payload()
+            self.wait_for(ex.notify_slack(payload))
             self.assertEqual(1, len(requests.posts))
             post = requests.posts[0]
             self.assertEqual(ACTION_PAYLOAD['webhook_url'], post.get('url'))
@@ -140,3 +141,8 @@ class TestSlackAction(unittest.TestCase):
             self.assertTrue(post.get('verify'))
             self.assertTrue('text' in post.get('json'))
             self.assertTrue('attachments' in post.get('json'))
+
+    def wait_for(self, thread):
+        if not thread:
+            return
+        thread.join()
