@@ -11,9 +11,9 @@ from plone.app.testing import TEST_USER_ID
 from plone.contentrules.engine.interfaces import IRuleStorage
 from plone.contentrules.rule.interfaces import IExecutable
 from plone.contentrules.rule.interfaces import IRuleAction
-from zope.component.interfaces import IObjectEvent
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component.interfaces import IObjectEvent
 from zope.interface import implementer
 
 import unittest2 as unittest
