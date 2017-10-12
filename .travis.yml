@@ -21,7 +21,7 @@ script:
   - bin/test
 after_success:
   - bin/createcoverage
-  - pip install coverage==3.6 coveralls
+  - pip install coverage==3.7.1 coveralls
   - coveralls
 notifications:
   email:
