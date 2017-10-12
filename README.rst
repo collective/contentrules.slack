@@ -2,6 +2,12 @@
 contentrules.slack
 ==================
 
+.. image:: https://img.shields.io/travis/BriefyHQ/contentrules.slack/master.svg?style=flat-square
+    :target: https://travis-ci.org/BriefyHQ/contentrules.slack
+
+.. image:: https://img.shields.io/coveralls/BriefyHQ/contentrules.slack/master.svg?style=flat-square
+    :target: https://coveralls.io/r/BriefyHQ/contentrules.slack
+
 Content rules action to post a message on Slack.
 
 
