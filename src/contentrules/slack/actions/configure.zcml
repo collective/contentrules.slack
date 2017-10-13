@@ -24,8 +24,8 @@
 
      <plone:ruleAction
          name="plone.actions.Slack"
-         title="Post to Slack"
-         description="Send an slack on the triggering object"
+         title="Post a message to Slack"
+         description="Send a message to Slack"
          for="*"
          event="*"
          addview="plone.actions.Slack"

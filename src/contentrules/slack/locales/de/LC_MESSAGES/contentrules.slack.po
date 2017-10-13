@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-10-11 21:18+0000\n"
-"PO-Revision-Date: 2017-10-11 21:18+0000\n\n"
+"POT-Creation-Date: 2017-10-13 09:42+0000\n"
+"PO-Revision-Date: 2017-10-11 21:18+0000\n"
 "Last-Translator: Briefy Tech <developers@briefy.co>\n"
 "Language-Team: Briefy Tech <developers@briefy.co>\n"
 "MIME-Version: 1.0\n"
@@ -14,11 +14,11 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../actions/slack.py:226
+#: ../actions/slack.py:235
 msgid "Action to post a message to a Slack channel."
 msgstr ""
 
-#: ../actions/slack.py:225
+#: ../actions/slack.py:234
 msgid "Add Slack Action"
 msgstr ""
 
@@ -38,11 +38,11 @@ msgstr ""
 msgid "Color of the message. Valid values are \"good\", \"warning\", \"danger\" or any hex color code (eg. #439FE0)"
 msgstr ""
 
-#: ../actions/slack.py:227
+#: ../actions/slack.py:236
 msgid "Configure element"
 msgstr ""
 
-#: ../actions/slack.py:244
+#: ../actions/slack.py:253
 msgid "Edit Slack Action"
 msgstr ""
 
@@ -75,7 +75,7 @@ msgid "Post a message on channel ${channel}"
 msgstr ""
 
 #: ../actions/configure.zcml:35
-msgid "Post to Slack"
+msgid "Post a message to Slack"
 msgstr ""
 
 #: ../actions/slack.py:43
@@ -83,7 +83,7 @@ msgid "Pretext"
 msgstr ""
 
 #: ../actions/configure.zcml:35
-msgid "Send an slack on the triggering object"
+msgid "Send a message to Slack"
 msgstr ""
 
 #: ../actions/slack.py:63
