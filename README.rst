@@ -2,23 +2,16 @@
 contentrules.slack
 ==================
 
+Plone content rules action to post a message on a Slack channel
+
+Health
+------
+
 .. image:: https://img.shields.io/travis/BriefyHQ/contentrules.slack/master.svg?style=flat-square
     :target: https://travis-ci.org/BriefyHQ/contentrules.slack
 
 .. image:: https://img.shields.io/coveralls/BriefyHQ/contentrules.slack/master.svg?style=flat-square
     :target: https://coveralls.io/r/BriefyHQ/contentrules.slack
-
-Content rules action to post a message on Slack.
-
-
-Translations
-------------
-
-This product has been translated into
-
-- English (Érico Andrei)
-- Português do Brasil (Rudá Porto)
-- Deutsch ()
 
 
 Installation
@@ -36,6 +29,16 @@ Install contentrules.slack by adding it to your buildout::
 
 and then running ``bin/buildout``
 
+
+Translations
+------------
+
+This product has been translated into
+
+- English (Érico Andrei)
+- Português do Brasil (Rudá Porto)
+- Deutsch ()
+- Español ()
 
 Contribute
 ----------

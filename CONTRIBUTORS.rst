@@ -1,4 +1,5 @@
 Contributors
 ============
 
-- Briefy Tech, developers@briefy.co
+- Érico Andrei, ericof
+- Rudá Porto, rudaporto

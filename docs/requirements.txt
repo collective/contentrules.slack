@@ -1,0 +1,5 @@
+alabaster==0.7.10
+Jinja2==2.8
+snowballstemmer==1.2.1
+sphinx-bootstrap-theme==0.6.0
+Sphinx==1.6.1
