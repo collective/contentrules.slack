@@ -47,6 +47,9 @@ setup(
         'z3c.jbot',
     ],
     extras_require={
+        'dev': [
+            'zest.releaser[recommended]',
+        ],
         'test': [
             'plone.app.testing',
             # Plone KGS does not use this version, because it would break
