@@ -6,7 +6,7 @@ def setup(app):
     app.add_stylesheet('_static/styles/briefy.css')
 
 
-release = '1.0a1'
+release = '1.0.0a1'
 version = release.split('.')
 
 major_version = version[0]
@@ -25,7 +25,7 @@ source_suffix = '.rst'
 source_encoding = 'utf-8'
 master_doc = 'index'
 
-project = 'contentrules.slack'
+project = 'Slack Content Rules Action'
 copyright = '2017, Briefy'
 author = 'Briefy Tech Team'
 
