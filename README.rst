@@ -12,6 +12,9 @@ About
 .. |ci| image:: https://img.shields.io/travis/BriefyHQ/contentrules.slack/master.svg?style=flat-square
     :target: https://travis-ci.org/BriefyHQ/contentrules.slack
 
+.. |chat| image:: https://badges.gitter.im/BriefyHQ/contentrules.slack.svg
+    :target: https://gitter.im/BriefyHQ/contentrules.slack
+
 .. |cov| image:: https://img.shields.io/coveralls/BriefyHQ/contentrules.slack/master.svg?style=flat-square
     :target: https://coveralls.io/r/BriefyHQ/contentrules.slack
 
@@ -81,8 +84,9 @@ Contribute
 Support
 =======
 
-If you are having issues, please let us know.
-Sent an email to us: developers@briefy.co
+If you are having issues, please let us know:
+
+|chat|
 
 
 License
