@@ -44,7 +44,7 @@ This product has been translated into
 - English (Érico Andrei)
 - Português do Brasil (Rudá Porto)
 - Deutsch ()
-- Español ()
+- Español (Álvaro Hurtado Mochón)
 
 Contribute
 ----------
