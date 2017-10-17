@@ -70,7 +70,7 @@ This product has been translated into:
 
 - English (Érico Andrei)
 - Português do Brasil (Rudá Porto)
-- Deutsch ()
+- Deutsch (Yael Biran)
 - Español (Álvaro Hurtado Mochón)
 
 
