@@ -1,13 +1,13 @@
-`contentrules.slack`_ is a package providing a `Plone`_ content rules action to post a message on a Slack channel.
+Slack Content Rules Action
+==========================
 
-.. image:: https://raw.githubusercontent.com/BriefyHQ/contentrules.slack/master/docs/_static/images/logo_briefy_100px.png
-    :target: https://briefy.co
+`contentrules.slack`_ is a package providing a `Plone`_ content rules action to post a message on a Slack channel.
 
 Read the whole `documentation`_.
 
 
-About
-=====
+Code Health
+===========
 
 .. |ci| image:: https://img.shields.io/travis/BriefyHQ/contentrules.slack/master.svg?style=flat-square
     :target: https://travis-ci.org/BriefyHQ/contentrules.slack
@@ -99,6 +99,10 @@ One Last Thing
 ==============
 
 Made in Berlin, with love, by your friends @ `Briefy`_.
+
+.. image:: https://raw.githubusercontent.com/BriefyHQ/contentrules.slack/master/docs/_static/images/logo_briefy_100px.png
+    :target: https://briefy.co
+
 
 
 .. _`contentrules.slack`: https://github.com/BriefyHQ/contentrules.slack
