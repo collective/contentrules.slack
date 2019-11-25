@@ -16,7 +16,7 @@ from zope.component import getUtility
 from zope.component.interfaces import IObjectEvent
 from zope.interface import implementer
 
-import unittest2 as unittest
+import unittest
 
 
 ACTION_PAYLOAD = {
