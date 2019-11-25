@@ -18,85 +18,77 @@ from zope.interface import Interface
 import logging
 
 
-logger = logging.getLogger('contentrules.slack')
+logger = logging.getLogger("contentrules.slack")
 
 
 class ISlackAction(Interface):
     """Definition of the configuration available for a slack action."""
 
     webhook_url = schema.URI(
-        title=_(u'Webhook url'),
+        title=_("Webhook url"),
         description=_(
-            u'URL configuration for this integration. '
-            u'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"'
+            "URL configuration for this integration. "
+            'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"',
         ),
-        required=True
+        required=True,
     )
     channel = schema.TextLine(
-        title=_(u'Channel'),
-        description=_(
-            u'Channel to receive the message. eg.:"#plone-rulez"'
-        ),
-        required=True
+        title=_("Channel"),
+        description=_('Channel to receive the message. eg.:"#plone-rulez"'),
+        required=True,
     )
     pretext = schema.TextLine(
-        title=_(u'Pretext'),
+        title=_("Pretext"),
         description=_(
-            u'This is optional text that appears above the message attachment block.'
+            "This is optional text that appears above the message attachment block.",
         ),
-        required=False
+        required=False,
     )
     title = schema.TextLine(
-        title=_(u'Title'),
+        title=_("Title"),
         description=_(
-            u'The title is displayed as larger, bold text near the top of a message attachment.'
+            "The title is displayed as larger, bold text near the top of a message attachment.",
         ),
-        required=True
+        required=True,
     )
     title_link = schema.TextLine(
-        title=_(u'Title Link'),
+        title=_("Title Link"),
         description=_('Link to be added to the title. i.e.: "${absolute_url}"'),
-        default=u'${absolute_url}',
-        required=False
+        default="${absolute_url}",
+        required=False,
     )
     text = schema.TextLine(
-        title=_(u'Text'),
-        description=_(
-            u'This is the main text in a message attachment.'
-        ),
-        required=True
+        title=_("Text"),
+        description=_("This is the main text in a message attachment."),
+        required=True,
     )
     color = schema.TextLine(
-        title=_(u'Color'),
+        title=_("Color"),
         description=_(
             'Color of the message. Valid values are "good", "warning", "danger" or '
-            'any hex color code (eg. #439FE0)'
+            "any hex color code (eg. #439FE0)",
         ),
-        required=False
+        required=False,
     )
     icon = schema.TextLine(
-        title=_(u'Icon'),
-        description=_(
-            u'Icon to be displayed on the message. eg:":flag-br:"'
-        ),
-        required=False
+        title=_("Icon"),
+        description=_('Icon to be displayed on the message. eg:":flag-br:"'),
+        required=False,
     )
     username = schema.TextLine(
-        title=_(u'Username'),
-        description=_(
-            u'Name to be displayed as the author of this message.'
-        ),
-        default=u'Plone CMS',
-        required=True
+        title=_("Username"),
+        description=_("Name to be displayed as the author of this message."),
+        default="Plone CMS",
+        required=True,
     )
     fields = schema.Text(
-        title=_(u'Fields'),
+        title=_("Fields"),
         description=_(
-            u'Fields are added to the bottom of the Slack message like a small table.'
-            u'Please add one definition per line in the format:"title|value|Short", i.e:'
-            u'"Review State|${review_state_title}|True"'
+            "Fields are added to the bottom of the Slack message like a small table."
+            'Please add one definition per line in the format:"title|value|Short", i.e:'
+            '"Review State|${review_state_title}|True"',
         ),
-        required=False
+        required=False,
     )
 
 
@@ -105,21 +97,23 @@ class SlackAction(SimpleItem):
     """The implementation of the action defined before."""
 
     webhook_url = SLACK_WEBHOOK_URL
-    channel = u''
-    pretext = u''
-    title = u''
-    title_link = u'${absolute_url}'
-    text = u''
-    color = u''
-    icon = u''
-    username = u''
-    fields = u''
+    channel = ""
+    pretext = ""
+    title = ""
+    title_link = "${absolute_url}"
+    text = ""
+    color = ""
+    icon = ""
+    username = ""
+    fields = ""
 
-    element = 'plone.actions.Slack'
+    element = "plone.actions.Slack"
 
     @property
     def summary(self):
-        return _(u'Post a message on channel ${channel}', mapping=dict(channel=self.channel))
+        return _(
+            "Post a message on channel ${channel}", mapping=dict(channel=self.channel),
+        )
 
 
 @implementer(IExecutable)
@@ -142,16 +136,16 @@ class SlackActionExecutor(object):
         :rtype: list of dictionaries.
         """
         element = self.element
-        fields_spec = element.fields or ''
+        fields_spec = element.fields or ""
         fields = []
-        for item in fields_spec.split('\n'):
+        for item in fields_spec.split("\n"):
             try:
-                title, value, short = item.split('|')
+                title, value, short = item.split("|")
             except ValueError:
                 continue
-            short = True if short.lower() == 'true' else False
+            short = True if short.lower() == "true" else False
             value = interpolator(value).strip()
-            fields.append({'title': title, 'value': value, 'short': short})
+            fields.append({"title": title, "value": value, "short": short})
         return fields
 
     def get_ftw_configuration(self):
@@ -161,9 +155,9 @@ class SlackActionExecutor(object):
         :rtype: dict.
         """
         params = {
-            'webhook_url': self.element.webhook_url,
-            'timeout': 10,
-            'verify': True,
+            "webhook_url": self.element.webhook_url,
+            "timeout": 10,
+            "verify": True,
         }
         return params
 
@@ -185,20 +179,20 @@ class SlackActionExecutor(object):
         channel = element.channel
         username = element.username
         payload = {
-            'attachments': [
+            "attachments": [
                 {
-                    'color': color,
-                    'fallback': text,
-                    'title': title,
-                    'title_link': title_link,
-                    'pretext': pretext,
-                    'fields': self._process_fields_(interpolator)
-                }
+                    "color": color,
+                    "fallback": text,
+                    "title": title,
+                    "title_link": title_link,
+                    "pretext": pretext,
+                    "fields": self._process_fields_(interpolator),
+                },
             ],
-            'icon_emoji': icon,
-            'text': text,
-            'username': username,
-            'channel': channel
+            "icon_emoji": icon,
+            "text": text,
+            "username": username,
+            "channel": channel,
         }
         return payload
 
@@ -231,13 +225,13 @@ class SlackAddForm(ActionAddForm):
     """An add form for the Slack Action."""
 
     schema = ISlackAction
-    label = _(u'Add Slack Action')
-    description = _(u'Action to post a message to a Slack channel.')
-    form_name = _(u'Configure element')
+    label = _("Add Slack Action")
+    description = _("Action to post a message to a Slack channel.")
+    form_name = _("Configure element")
     Type = SlackAction
 
     # custom template will allow us to add help text
-    template = ViewPageTemplateFile('slack.pt')
+    template = ViewPageTemplateFile("slack.pt")
 
 
 class SlackAddFormView(ContentRuleFormWrapper):
@@ -250,12 +244,12 @@ class SlackEditForm(ActionEditForm):
     """An edit form for the slack action."""
 
     schema = ISlackAction
-    label = _(u'Edit Slack Action')
-    description = _(u'Action to post a message to a Slack channel.')
-    form_name = _(u'Configure element')
+    label = _("Edit Slack Action")
+    description = _("Action to post a message to a Slack channel.")
+    form_name = _("Configure element")
 
     # custom template will allow us to add help text
-    template = ViewPageTemplateFile('slack.pt')
+    template = ViewPageTemplateFile("slack.pt")
 
 
 class SlackEditFormView(ContentRuleFormWrapper):
