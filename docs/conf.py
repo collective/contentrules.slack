@@ -25,9 +25,9 @@ source_suffix = '.rst'
 source_encoding = 'utf-8'
 master_doc = 'index'
 
-project = 'Slack Content Rules Action'
-copyright = '2017, Briefy'
-author = 'Briefy Tech Team'
+project = 'contentrules.slack'
+copyright = '2019, Pendect'
+author = 'Pendect Tech'
 
 version = '{0}.{1}'.format(major_version, minor_version)
 release = release

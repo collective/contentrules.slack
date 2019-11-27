@@ -1,5 +1,5 @@
-Slack Content Rules Action
-==========================
+contentrules.slack
+==================
 
 `contentrules.slack`_ is a package providing a `Plone`_ content rules action to post a message on a Slack channel.
 
@@ -7,7 +7,7 @@ Read the whole `documentation`_.
 
 
 Code Health
-===========
+-----------
 
 .. |ci| image:: https://img.shields.io/travis/collective/contentrules.slack/master.svg?style=flat-square
     :target: https://travis-ci.org/collective/contentrules.slack
@@ -41,7 +41,7 @@ Code Health
 
 
 Installation
-============
+------------
 
 Install contentrules.slack by adding it to your buildout:
 
@@ -64,7 +64,7 @@ and then running buildout:
 
 
 Translations
-============
+------------
 
 This product has been translated into:
 
@@ -75,14 +75,14 @@ This product has been translated into:
 
 
 Contribute
-==========
+----------
 
 - Issue Tracker: https://github.com/collective/contentrules.slack/issues
 - Source Code: https://github.com/collective/contentrules.slack
 
 
 Support
-=======
+-------
 
 If you are having issues, please let us know:
 
@@ -90,16 +90,17 @@ If you are having issues, please let us know:
 
 
 License
-=======
+-------
 
 The project is licensed under the GPLv2.
 
 
 One Last Thing
-==============
+--------------
 
 Originally Made in Berlin, with love, by your friends @ Briefy.
-Now maintained by `Pendect`_
+
+Now maintained by `Pendect`_.
 
 
 .. _`contentrules.slack`: https://github.com/collective/contentrules.slack
