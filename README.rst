@@ -98,15 +98,11 @@ The project is licensed under the GPLv2.
 One Last Thing
 ==============
 
-Made in Berlin, with love, by your friends @ `Briefy`_.
-
-.. image:: https://raw.githubusercontent.com/collective/contentrules.slack/master/docs/_static/images/logo_briefy_100px.png
-    :target: https://briefy.co
-
+Originally Made in Berlin, with love, by your friends @ Briefy.
+Now maintained by `Pendect`_
 
 
 .. _`contentrules.slack`: https://github.com/collective/contentrules.slack
 .. _`Plone`: https://plone.org
 .. _`documentation`: https://contentrulesslack.readthedocs.io/
-.. _`Briefy`: https://briefy.co/
 .. _`Pendect`: https://pendect.com/
