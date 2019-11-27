@@ -17,7 +17,7 @@ long_description = "\n\n".join(
 setup(
     name="contentrules.slack",
     version="1.0.0a2.dev0",
-    description="Slack content rule action.",
+    description="Slack content rule action for Plone.",
     long_description=long_description,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -35,7 +35,7 @@ setup(
     ],
     keywords="Python Plone Slack ContentRules Pendect",
     author="Pendect Tech",
-    author_email="tech@pendect.com",
+    author_email="opensource@pendect.com",
     url="https://pypi.python.org/pypi/contentrules.slack",
     license="GPL version 2",
     project_urls={
