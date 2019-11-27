@@ -52,6 +52,7 @@ setup(
     python_requires='>=3.6.0',
     install_requires=[
         "ftw.slacker>=1.1.0",
+        "prettyconf",
         "plone.api",
         "Products.GenericSetup>=1.8.2",
         "setuptools",
