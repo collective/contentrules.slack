@@ -1,4 +1,7 @@
 graft src/contentrules
 graft docs
 include *.rst
+include *.GPL
+include *.txt
+include Makefile
 global-exclude *.pyc
