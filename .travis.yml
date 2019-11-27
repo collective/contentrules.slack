@@ -5,7 +5,7 @@ cache:
   - eggs
   - downloads
 python:
-  - 2.7
+  - 3.7
 matrix:
   fast_finish: true
 install:
@@ -21,8 +21,5 @@ script:
   - bin/test
 after_success:
   - bin/createcoverage
-  - pip install coverage==3.7.1 coveralls
+  - pip install coverage coveralls
   - coveralls
-notifications:
-  email:
-    - developers@briefy.co
