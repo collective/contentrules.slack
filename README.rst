@@ -9,14 +9,14 @@ Read the whole `documentation`_.
 Code Health
 ===========
 
-.. |ci| image:: https://img.shields.io/travis/BriefyHQ/contentrules.slack/master.svg?style=flat-square
-    :target: https://travis-ci.org/BriefyHQ/contentrules.slack
+.. |ci| image:: https://img.shields.io/travis/collective/contentrules.slack/master.svg?style=flat-square
+    :target: https://travis-ci.org/collective/contentrules.slack
 
-.. |chat| image:: https://badges.gitter.im/BriefyHQ/contentrules.slack.svg
-    :target: https://gitter.im/BriefyHQ/contentrules.slack
+.. |chat| image:: https://badges.gitter.im/collective/contentrules.slack.svg
+    :target: https://gitter.im/collective/contentrules.slack
 
-.. |cov| image:: https://img.shields.io/coveralls/BriefyHQ/contentrules.slack/master.svg?style=flat-square
-    :target: https://coveralls.io/r/BriefyHQ/contentrules.slack
+.. |cov| image:: https://img.shields.io/coveralls/collective/contentrules.slack/master.svg?style=flat-square
+    :target: https://coveralls.io/r/collective/contentrules.slack
 
 .. |docs| image:: http://readthedocs.org/projects/contentrulesslack/badge/?version=latest
     :target: http://contentrulesslack.readthedocs.io
@@ -77,8 +77,8 @@ This product has been translated into:
 Contribute
 ==========
 
-- Issue Tracker: https://github.com/BriefyHQ/contentrules.slack/issues
-- Source Code: https://github.com/BriefyHQ/contentrules.slack
+- Issue Tracker: https://github.com/collective/contentrules.slack/issues
+- Source Code: https://github.com/collective/contentrules.slack
 
 
 Support
@@ -100,12 +100,13 @@ One Last Thing
 
 Made in Berlin, with love, by your friends @ `Briefy`_.
 
-.. image:: https://raw.githubusercontent.com/BriefyHQ/contentrules.slack/master/docs/_static/images/logo_briefy_100px.png
+.. image:: https://raw.githubusercontent.com/collective/contentrules.slack/master/docs/_static/images/logo_briefy_100px.png
     :target: https://briefy.co
 
 
 
-.. _`contentrules.slack`: https://github.com/BriefyHQ/contentrules.slack
+.. _`contentrules.slack`: https://github.com/collective/contentrules.slack
 .. _`Plone`: https://plone.org
-.. _`documentation`: http://contentrulesslack.readthedocs.io/
+.. _`documentation`: https://contentrulesslack.readthedocs.io/
 .. _`Briefy`: https://briefy.co/
+.. _`Pendect`: https://pendect.com/

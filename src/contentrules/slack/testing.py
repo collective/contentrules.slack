@@ -25,13 +25,13 @@ CONTENTRULES_SLACK_FIXTURE = ContentrulesSlackLayer()
 
 CONTENTRULES_SLACK_INTEGRATION_TESTING = IntegrationTesting(
     bases=(CONTENTRULES_SLACK_FIXTURE,),
-    name='ContentrulesSlackLayer:IntegrationTesting'
+    name="ContentrulesSlackLayer:IntegrationTesting",
 )
 
 
 CONTENTRULES_SLACK_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(CONTENTRULES_SLACK_FIXTURE,),
-    name='ContentrulesSlackLayer:FunctionalTesting'
+    name="ContentrulesSlackLayer:FunctionalTesting",
 )
 
 
@@ -39,7 +39,7 @@ CONTENTRULES_SLACK_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         CONTENTRULES_SLACK_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE
+        z2.ZSERVER_FIXTURE,
     ),
-    name='ContentrulesSlackLayer:AcceptanceTesting'
+    name="ContentrulesSlackLayer:AcceptanceTesting",
 )
