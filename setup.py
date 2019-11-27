@@ -40,7 +40,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "ftw.slacker",
+        "ftw.slacker>=1.1.0",
         "plone.api",
         "prettyconf",
         "Products.GenericSetup>=1.8.2",
