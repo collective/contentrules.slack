@@ -42,13 +42,18 @@ setup(
     install_requires=[
         "ftw.slacker>=1.1.0",
         "plone.api",
-        "prettyconf",
         "Products.GenericSetup>=1.8.2",
         "setuptools",
-        "z3c.jbot",
     ],
     extras_require={
-        "dev": ["zest.releaser[recommended]",],
+        "dev": ["black", "isort", "zest.releaser[recommended]",],
+        "docs": [
+            "alabaster",
+            "Jinja2",
+            "snowballstemmer",
+            "sphinx-bootstrap-theme",
+            "Sphinx",
+        ],
         "test": [
             "plone.app.testing",
             "plone.testing>=5.0.0",
