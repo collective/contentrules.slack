@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.0.0a2 (unreleased)
---------------------
+1.0.0 (2019-11-28)
+------------------
 
 - Add Plone 5.2 / Python 3 support.
   [ericof]
