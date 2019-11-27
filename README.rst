@@ -107,5 +107,6 @@ Made in Berlin, with love, by your friends @ `Briefy`_.
 
 .. _`contentrules.slack`: https://github.com/collective/contentrules.slack
 .. _`Plone`: https://plone.org
-.. _`documentation`: http://contentrulesslack.readthedocs.io/
+.. _`documentation`: https://contentrulesslack.readthedocs.io/
 .. _`Briefy`: https://briefy.co/
+.. _`Pendect`: https://pendect.com/
