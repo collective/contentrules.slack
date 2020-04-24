@@ -125,6 +125,23 @@ class TestSlackAction(unittest.TestCase):
         self.assertEqual(2, len(fields))
         self.assertEqual(u"A Document", fields[0]["value"])
 
+    def test_payload_with_none_values(self):
+        e = SlackAction()
+        for attr, value in ACTION_PAYLOAD.items():
+            setattr(e, attr, value)
+
+        e.title = None
+        e.pretext = None
+
+        ex = getMultiAdapter((self.folder, e, DummyEvent(self.doc)), IExecutable)
+        payload = ex.get_message_payload()
+
+        attachment = payload["attachments"][0]
+        fields = attachment["fields"]
+        self.assertEqual(u"", attachment["title"])
+        self.assertEqual(2, len(fields))
+        self.assertEqual(u"A Document", fields[0]["value"])
+
     def test_execute(self):
         e = SlackAction()
         for attr, value in ACTION_PAYLOAD.items():

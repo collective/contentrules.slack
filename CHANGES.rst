@@ -4,7 +4,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix "TypeError: expected string or bytes-like object" when one attribute of action is not set.
+  [ericof]
 
 
 1.0.0 (2019-11-28)

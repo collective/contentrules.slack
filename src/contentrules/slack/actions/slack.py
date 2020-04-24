@@ -21,6 +21,12 @@ import logging
 logger = logging.getLogger("contentrules.slack")
 
 
+def safe_attr(element, attr):
+    """Return attribute value as string."""
+    value = getattr(element, attr)
+    return value if value is not None else ""
+
+
 class ISlackAction(Interface):
     """Definition of the configuration available for a slack action."""
 
@@ -170,14 +176,14 @@ class SlackActionExecutor(object):
         obj = self.event.object
         element = self.element
         interpolator = IStringInterpolator(obj)
-        title = interpolator(element.title).strip()
-        title_link = interpolator(element.title_link).strip()
-        pretext = interpolator(element.pretext).strip()
-        text = interpolator(element.text).strip()
-        color = element.color
-        icon = element.icon
-        channel = element.channel
-        username = element.username
+        title = interpolator(safe_attr(element, "title")).strip()
+        title_link = interpolator(safe_attr(element, "title_link")).strip()
+        pretext = interpolator(safe_attr(element, "pretext")).strip()
+        text = interpolator(safe_attr(element, "text")).strip()
+        color = safe_attr(element, "color")
+        icon = safe_attr(element, "icon")
+        channel = safe_attr(element, "channel")
+        username = safe_attr(element, "username")
         payload = {
             "attachments": [
                 {
