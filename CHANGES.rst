@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 (unreleased)
+1.0.1 (2020-04-25)
 ------------------
 
 - Fix "TypeError: expected string or bytes-like object" when one attribute of action is not set.

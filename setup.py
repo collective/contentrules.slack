@@ -16,7 +16,7 @@ long_description = "\n\n".join(
 
 setup(
     name="contentrules.slack",
-    version="1.0.1.dev0",
+    version="1.0.1",
     description="Slack content rule action for Plone.",
     long_description=long_description,
     classifiers=[
