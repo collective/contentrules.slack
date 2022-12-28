@@ -1,6 +1,1 @@
--c constraints_plone52.txt
-setuptools
-zc.buildout
-black
-isort
-zest.releaser[recommended]
+".[test]"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from contentrules.slack import _
 from contentrules.slack import SLACK_WEBHOOK_URL
 from ftw.slacker import notify_slack
