@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Installer for the contentrules.slack package."""
 
 from setuptools import find_packages
@@ -16,22 +15,21 @@ long_description = "\n\n".join(
 
 setup(
     name="contentrules.slack",
-    version="1.0.2.dev0",
+    version="2.0.0.dev0",
     description="Slack content rule action for Plone.",
     long_description=long_description,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
-        "Framework :: Plone :: 5.2",
+        "Framework :: Plone :: 6.0",
         "Framework :: Plone :: Addon",
         "Framework :: Plone",
-        "Framework :: Zope :: 4",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python",
     ],
     keywords="Python Plone Slack ContentRules Pendect",
@@ -50,26 +48,25 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
-    python_requires='>=3.6.0',
+    python_requires='>=3.7.0',
     install_requires=[
         "ftw.slacker>=1.1.0",
         "prettyconf",
         "plone.api",
-        "Products.GenericSetup>=1.8.2",
         "setuptools",
     ],
     extras_require={
-        "dev": ["black", "isort", "zest.releaser[recommended]",],
-        "docs": [
+        "test": [
             "alabaster",
             "Jinja2",
             "snowballstemmer",
             "sphinx-bootstrap-theme",
             "Sphinx",
-        ],
-        "test": [
+            "black",
+            "isort",
+            "zest.releaser[recommended]",
             "plone.app.testing",
-            "plone.testing>=5.0.0",
+            "plone.testing",
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
         ],

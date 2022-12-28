@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from contentrules.slack.actions.slack import SlackAction
 from contentrules.slack.actions.slack import SlackAddFormView
 from contentrules.slack.actions.slack import SlackEditFormView
