@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-10-13 09:42+0000\n"
+"POT-Creation-Date: 2023-02-07 08:43+0000\n"
 "PO-Revision-Date: 2017-10-11 21:18+0000\n"
 "Last-Translator: Pendect Tech <opensource@pendect.com>\n"
 "Language-Team: Pendect Tech <opensource@pendect.com>\n"
@@ -14,165 +14,165 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ../actions/slack.py:235
+#: contentrules/slack/actions/slack.py:235
 msgid "Action to post a message to a Slack channel."
 msgstr "Acción para enviar un mensaje a un canal de Slack"
 
-#: ../actions/slack.py:234
+#: contentrules/slack/actions/slack.py:234
 msgid "Add Slack Action"
 msgstr "Añadir acción de Slack"
 
-#: ../actions/slack.py:36
+#: contentrules/slack/actions/slack.py:41
 msgid "Channel"
 msgstr "Canal"
 
-#: ../actions/slack.py:37
+#: contentrules/slack/actions/slack.py:42
 msgid "Channel to receive the message. eg.:\"#plone-rulez\""
 msgstr "Canal al que se enviará el mensaje. Por ejemplo: \"#plone-rulez\""
 
-#: ../actions/slack.py:70
+#: contentrules/slack/actions/slack.py:71
 msgid "Color"
 msgstr "Color"
 
-#: ../actions/slack.py:71
+#: contentrules/slack/actions/slack.py:72
 msgid "Color of the message. Valid values are \"good\", \"warning\", \"danger\" or any hex color code (eg. #439FE0)"
 msgstr "Color del mensaje. Las opciones válidas son \"good\", \"warning\", \"danger\" o cualquier código en hexadecimal (por ejemplo #439FE0)"
 
-#: ../actions/slack.py:236
+#: contentrules/slack/actions/slack.py:236
 msgid "Configure element"
 msgstr "Configurar elemento"
 
-#: ../actions/slack.py:253
+#: contentrules/slack/actions/slack.py:253
 msgid "Edit Slack Action"
 msgstr "Editar acción de Slack"
 
-#: ../actions/slack.py:93
+#: contentrules/slack/actions/slack.py:90
 msgid "Fields"
 msgstr "Campos"
 
-#: ../actions/slack.py:94
+#: contentrules/slack/actions/slack.py:91
 msgid "Fields are added to the bottom of the Slack message like a small table.Please add one definition per line in the format:\"title|value|Short\", i.e:\"Review State|${review_state_title}|True\""
 msgstr "Estos campos son añadidos al final del mensaje de Slack como una pequeña tabla. Por favor, añade una definición por línea siguiendo este formato: \"título|valor|Corto\", i.e:\"Estado de la review|${review_state_title}|True\""
 
-#: ../actions/slack.py:78
+#: contentrules/slack/actions/slack.py:79
 msgid "Icon"
 msgstr "Icono"
 
-#: ../actions/slack.py:79
+#: contentrules/slack/actions/slack.py:80
 msgid "Icon to be displayed on the message. eg:\":flag-br:\""
 msgstr "Icono del mensaje. Por ejemplo:\":flag-br:\""
 
-#: ../actions/slack.py:58
+#: contentrules/slack/actions/slack.py:61
 msgid "Link to be added to the title. i.e.: \"${absolute_url}\""
 msgstr "Enlace del título del mensaje. Por ejemplo: \"${absolute_url}\""
 
-#: ../actions/slack.py:86
+#: contentrules/slack/actions/slack.py:85
 msgid "Name to be displayed as the author of this message."
 msgstr "Nombre del autor del mensaje."
 
-#: ../actions/slack.py:122
+#: contentrules/slack/actions/slack.py:119
 msgid "Post a message on channel ${channel}"
 msgstr "Enviar un mensaje en el canal ${channel}"
 
-#: ../actions/configure.zcml:35
+#: contentrules/slack/actions/configure.zcml:36
 msgid "Post a message to Slack"
 msgstr "Enviar un mensaje a Slack"
 
-#: ../actions/slack.py:43
+#: contentrules/slack/actions/slack.py:46
 msgid "Pretext"
 msgstr "Texto antes del mensaje"
 
-#: ../actions/configure.zcml:35
+#: contentrules/slack/actions/configure.zcml:36
 msgid "Send a message to Slack"
 msgstr "Enviar mensaje a Slack"
 
-#: ../actions/slack.py:63
+#: contentrules/slack/actions/slack.py:66
 msgid "Text"
 msgstr "Texto"
 
-#: ../actions/slack.py:51
+#: contentrules/slack/actions/slack.py:54
 msgid "The title is displayed as larger, bold text near the top of a message attachment."
 msgstr "El título se muestra como texto grande y en negrita en la parte de arriba del mensaje."
 
-#: ../actions/slack.py:44
+#: contentrules/slack/actions/slack.py:47
 msgid "This is optional text that appears above the message attachment block."
 msgstr "Este es un texto opcional que aparece encima del mensaje."
 
-#: ../actions/slack.py:64
+#: contentrules/slack/actions/slack.py:67
 msgid "This is the main text in a message attachment."
 msgstr "Este es el texto principal del mensaje."
 
-#: ../actions/slack.py:50
+#: contentrules/slack/actions/slack.py:53
 msgid "Title"
 msgstr "Título"
 
-#: ../actions/slack.py:57
+#: contentrules/slack/actions/slack.py:60
 msgid "Title Link"
 msgstr "Enlace del título"
 
-#: ../actions/slack.py:29
+#: contentrules/slack/actions/slack.py:34
 msgid "URL configuration for this integration. i.e.:\"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY\""
 msgstr "Configuración de la URL para esta integración. Por ejemplo:\"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY\""
 
-#: ../actions/slack.py:85
+#: contentrules/slack/actions/slack.py:84
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: ../actions/slack.py:28
+#: contentrules/slack/actions/slack.py:33
 msgid "Webhook url"
 msgstr "URL del webhook"
 
 #. Default: "Category"
-#: ../actions/slack.pt:28
+#: contentrules/slack/actions/slack.pt:28
 msgid "category-contentrules-slacksub"
 msgstr "Categoría"
 
 #. Default: "Contents in the channel, pretext, title, text and fields may be replaced with \"$&#123;&#125;\" variables from the table on the bottom of this form."
-#: ../actions/slack.pt:4
+#: contentrules/slack/actions/slack.pt:4
 msgid "description-contentrules-slacksub"
 msgstr "Los contenidos del canal, texto antes del mensaje, título, texto y los campos podría ser reemplazado por variables \"$&#123;&#125;\" de la tabla debajo de este formulario."
 
 #. Default: "Webhooks API documentation"
-#: ../actions/slack.pt:19
+#: contentrules/slack/actions/slack.pt:19
 msgid "slack-api-webhook"
 msgstr "Documentación de los Webhooks de la API"
 
 #. Default: "Slack Configuration"
-#: ../actions/slack.pt:10
+#: contentrules/slack/actions/slack.pt:10
 msgid "slack-configuration"
 msgstr "Configuración de Slack"
 
 #. Default: "create a new webhook"
-#: ../actions/slack.pt:13
+#: contentrules/slack/actions/slack.pt:13
 msgid "slack-create-webhook"
 msgstr "Crear un nuevo webhook"
 
 #. Default: "In order to better understand what can be done with this content rule we recommend the reading of the following documentation."
-#: ../actions/slack.pt:15
+#: contentrules/slack/actions/slack.pt:15
 msgid "slack-documentation"
 msgstr "Para entender mejor que se puede hacer con esta regla de contenido, recomendamos la lectura de la siguiente documentación."
 
 #. Default: "Do not forget to"
-#: ../actions/slack.pt:12
+#: contentrules/slack/actions/slack.pt:12
 msgid "slack-intro-webhook"
 msgstr "No te olvides de"
 
 #. Default: "Message builder"
-#: ../actions/slack.pt:20
+#: contentrules/slack/actions/slack.pt:20
 msgid "slack-message-builder"
 msgstr "Constructor de mensajes"
 
 #. Default: "Substitution"
-#: ../actions/slack.pt:30
+#: contentrules/slack/actions/slack.pt:30
 msgid "substitution-contentrules-slacksub"
 msgstr "Sustitución"
 
 #. Default: "Substitutions"
-#: ../actions/slack.pt:24
+#: contentrules/slack/actions/slack.pt:24
 msgid "title_contentrules_slacksub"
 msgstr "Sustituciones"
 
 #. Default: "Variable"
-#: ../actions/slack.pt:29
+#: contentrules/slack/actions/slack.pt:29
 msgid "variable-contentrules-slacksub"
 msgstr "Variable"

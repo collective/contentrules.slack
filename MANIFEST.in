@@ -1,6 +1,6 @@
 graft src/contentrules
 graft docs
-include *.rst
+include *.md
 include *.GPL
 include *.txt
 include Makefile

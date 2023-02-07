@@ -15,101 +15,90 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-SPHINXOPTS    =
-SPHINXAPIDOC  = ./bin/sphinx-apidoc
-SPHINXBUILD   = ./bin/sphinx-build
-PAPER         =
-BUILDDIR      = docs/_build
-SOURCEDIR      = docs
+PLONE6=6.0-latest
 
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-PACKAGE_NAME=contenrules.slack
-PACKAGE_PATH=/src/contenrules/slack
-CHECK_PATH=setup.py $(PACKAGE_PATH)
-
-# User-friendly check for sphinx-build
-ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
-$(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you dont have Sphinx installed, grab it from http://sphinx-doc.org/)
+CODE_QUALITY_VERSION=2.0.2
+ifndef LOG_LEVEL
+	LOG_LEVEL=INFO
 endif
+CURRENT_USER=$$(whoami)
+USER_INFO=$$(id -u ${CURRENT_USER}):$$(getent group ${CURRENT_USER}|cut -d: -f3)
+LINT=docker run --rm -e LOG_LEVEL="${LOG_LEVEL}" -v "${BACKEND_FOLDER}":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} check
+FORMAT=docker run --rm --user="${USER_INFO}" -e LOG_LEVEL="${LOG_LEVEL}" -v "${BACKEND_FOLDER}":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} format
 
-# Internal variables.
-PAPEROPT_a4     = -D latex_paper_size=a4
-PAPEROPT_letter = -D latex_paper_size=letter
-ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(SOURCEDIR)
-# the i18n builder cannot share the environment and doctrees with the others
-I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
+all: build
 
-.PHONY: docs
+# Add the following 'help' target to your Makefile
+# And add help text after each target name starting with '\#\#'
+.PHONY: help
+help: ## This help message
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 bin/pip:
 	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
 	python3 -m venv .
-	bin/pip install -U pip
+	bin/pip install -U pip wheel
 
-.PHONY: clean
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
-
-.PHONY: clean-build
-clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
-
-.PHONY: clean-pyc
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-
-.PHONY: clean-test
-clean-test: ## remove test and coverage artifacts
-	rm -f .coverage
-	rm -fr htmlcov/
-
-bin/mkwsgiinstance:	bin/pip
-	@echo "$(GREEN)==> Install Plone and create instance$(RESET)"
-	bin/pip install --use-deprecated=legacy-resolver -r requirements/plone6.txt
+.PHONY: build-plone-6.0
+build-plone-6.0: bin/pip ## Build Plone 6.0
+	@echo "$(GREEN)==> Build with Plone 6.0$(RESET)"
+	bin/pip install Plone -c https://dist.plone.org/release/$(PLONE6)/constraints.txt
+	bin/pip install -r requirements.txt
 	bin/mkwsgiinstance -d . -u admin:admin
 
 .PHONY: build
-build: bin/mkwsgiinstance ## Create virtualenv and install package in a Plone 6
-	@echo "$(GREEN)==> Setup Build$(RESET)"
-	bin/pip install --use-deprecated=legacy-resolver -r requirements.txt
+build: build-plone-6.0 ## Build Plone 6.0
 
-.PHONY: build-dev
-build-dev: bin/mkwsgiinstance ## Create virtualenv and install package in a Plone 6
-	@echo "$(GREEN)==> Setup Build$(RESET)"
-	bin/pip install --use-deprecated=legacy-resolver -r requirements/dev.txt
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -rf $(BUILDDIR)/*
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
-
-.PHONY: black
-black: ## Format codebase
-	./bin/black $(CHECK_PATH)
-
-.PHONY: isort
-isort: ## Format imports in the codebase
-	./bin/isort $(CHECK_PATH)
+.PHONY: clean
+clean: ## Remove old virtualenv and creates a new one
+	@echo "$(RED)==> Cleaning environment and build$(RESET)"
+	rm -rf bin lib lib64 include share etc var inituser pyvenv.cfg .installed.cfg
 
 .PHONY: format
-format: black isort ## Format the codebase according to our standards
+format: ## Format the codebase according to our standards
+	@echo "$(GREEN)==> Format codebase$(RESET)"
+	$(FORMAT)
 
 .PHONY: lint
-lint: lint-isort lint-black ## check style with flake8
+lint: ## check code style
+	$(LINT)
 
 .PHONY: lint-black
 lint-black: ## validate black formating
-	./bin/black --check --diff $(CHECK_PATH)
+	$(LINT) black
+
+.PHONY: lint-flake8
+lint-flake8: ## validate black formating
+	$(LINT) flake8
 
 .PHONY: lint-isort
 lint-isort: ## validate using isort
-	./bin/isort --check-only $(CHECK_PATH)
+	$(LINT) isort
+
+.PHONY: lint-pyroma
+lint-pyroma: ## validate using pyroma
+	$(LINT) pyroma
+
+.PHONY: lint-zpretty
+lint-zpretty: ## validate ZCML/XML using zpretty
+	$(LINT) zpretty
+
+# i18n
+bin/i18ndude:	bin/pip
+	@echo "$(GREEN)==> Install translation tools$(RESET)"
+	bin/pip install i18ndude
+
+.PHONY: i18n
+i18n: bin/i18ndude ## Update locales
+	@echo "$(GREEN)==> Updating locales$(RESET)"
+	bin/update_cr_slack_locale
 
 .PHONY: test
 test: ## run tests
-	./bin/zope-testrunner --auto-color --auto-progress --test-path src/
+	bin/pytest --disable-warnings
+
+.PHONY: start
+start: ## Start a Plone instance on localhost:8080
+	PYTHONWARNINGS=ignore ./bin/runwsgi etc/zope.ini

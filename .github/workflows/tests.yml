@@ -9,18 +9,19 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - 3.7
           - 3.8
           - 3.9
+          - "3.10"
+          - "3.11"
         plone:
-          - "6.0.0a1"
+          - "6.0-latest"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
       id: setup
-      uses: plone/setup-plone@v1.0.0
+      uses: plone/setup-plone@v2.0.0
       with:
         python-version: ${{ matrix.python }}
         plone-version: ${{ matrix.plone }}
@@ -28,9 +29,8 @@ jobs:
     # Install contentrules.slack with test extras
     - name: Install contentrules.slack
       run: |
-        pip install ".[test]" --use-deprecated legacy-resolver
-
+        pip install ".[test]"
     # test
-    - name: test
+    - name: Test Codebase
       run: |
-        zope-testrunner --auto-color --auto-progress --test-path src
+        pytest --disable-warnings
