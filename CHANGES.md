@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 (unreleased)
+
+
+- Nothing changed yet.
+
+
 ## 2.0.0 (2023-02-07)
 
 - Use `pytest` instead of `unittest`
