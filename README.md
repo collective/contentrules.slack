@@ -14,7 +14,7 @@
 [![PyPI - Plone Versions](https://img.shields.io/pypi/frameworkversions/plone/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
 
 [![Code analysis checks](https://github.com/collective/contentrules.slack/actions/workflows/code-analysis.yml/badge.svg)](https://github.com/collective/contentrules.slack/actions/workflows/code-analysis.yml)
-[![Tests](https://github.com/collective/contentrules.slack/actions/workflows/tests.yaml/badge.svg)](https://github.com/collective/contentrules.slack/actions/workflows/tests.yaml)
+[![Tests](https://github.com/collective/contentrules.slack/actions/workflows/tests.yml/badge.svg)](https://github.com/collective/contentrules.slack/actions/workflows/tests.yml)
 ![Code Style](https://img.shields.io/badge/Code%20Style-Black-000000)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/collective/contentrules.slack)](https://github.com/collective/contentrules.slack)
