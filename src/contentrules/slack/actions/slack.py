@@ -1,6 +1,6 @@
 from contentrules.slack import _
-from contentrules.slack import SLACK_WEBHOOK_URL
-from ftw.slacker import notify_slack
+from contentrules.slack.settings import SLACK_WEBHOOK_URL
+from contentrules.slack.slack_notifier import notify_slack
 from OFS.SimpleItem import SimpleItem
 from plone.app.contentrules.actions import ActionAddForm
 from plone.app.contentrules.actions import ActionEditForm
@@ -33,7 +33,7 @@ class ISlackAction(Interface):
         title=_("Webhook url"),
         description=_(
             "URL configuration for this integration. "
-            'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"',
+            'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"',  # noQA
         ),
         required=True,
     )
@@ -52,7 +52,7 @@ class ISlackAction(Interface):
     title = schema.TextLine(
         title=_("Title"),
         description=_(
-            "The title is displayed as larger, bold text near the top of a message attachment.",
+            "The title is displayed as larger, bold text near the top of a message attachment.",  # noQA
         ),
         required=True,
     )
@@ -117,7 +117,8 @@ class SlackAction(SimpleItem):
     @property
     def summary(self):
         return _(
-            "Post a message on channel ${channel}", mapping=dict(channel=self.channel),
+            "Post a message on channel ${channel}",
+            mapping=dict(channel=self.channel),
         )
 
 
