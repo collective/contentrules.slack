@@ -61,13 +61,15 @@ class SlackNotifier:
         ).raise_for_status()
 
     def _choose_webhook_url(self, webhook_url):
-        """Chooses the proper webhook_url. It returns the current webhook_url or a
-        fallback value from an environment variable.
+        """Chooses the proper webhook_url. It returns the current
+        webhook_url or a fallback value from an environment variable.
         """
         return webhook_url if webhook_url else settings.SLACK_WEBHOOK_URL
 
     def _is_notification_deactivated(self, webhook_url):
-        """Checks if the notification is deactivated based on the current webhook_url."""
+        """Checks if the notification is deactivated based on the
+        current webhook_url.
+        """
         if not webhook_url:
             return True
         return webhook_url.lower() == NOTIFICATION_DEACTIVATION_VALUE
@@ -76,7 +78,5 @@ class SlackNotifier:
         """Checks if the notification is globally deactivated through
         an environment variable.
         """
-        return (
-            settings.DEACTIVATE_SLACK_NOTIFICATION.lower()
-            == NOTIFICATION_DEACTIVATION_VALUE
-        )
+        deactivate = settings.DEACTIVATE_SLACK_NOTIFICATION.lower()
+        return deactivate == NOTIFICATION_DEACTIVATION_VALUE

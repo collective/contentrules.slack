@@ -152,7 +152,8 @@ myst_substitutions = {}
 #
 # https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html
 #
-# Note that contentrules.slack documentation imports documentation from several remote repositories.
+# Note that contentrules.slack documentation imports documentation from
+# several remote repositories.
 # These projects need to build their docs as part of their CI/CD and testing.
 # We use Intersphinx to resolve targets when either the individual project's or
 # the entire contentrules.slack documentation is built.

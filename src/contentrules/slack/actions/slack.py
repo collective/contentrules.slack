@@ -33,7 +33,7 @@ class ISlackAction(Interface):
         title=_("Webhook url"),
         description=_(
             "URL configuration for this integration. "
-            'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"',
+            'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"',  # noQA
         ),
         required=True,
     )
@@ -52,7 +52,7 @@ class ISlackAction(Interface):
     title = schema.TextLine(
         title=_("Title"),
         description=_(
-            "The title is displayed as larger, bold text near the top of a message attachment.",
+            "The title is displayed as larger, bold text near the top of a message attachment.",  # noQA
         ),
         required=True,
     )

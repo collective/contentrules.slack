@@ -53,7 +53,7 @@ setup(
         "prettyconf",
         "Plone",
         "setuptools",
-        "plone.restapi>=8.34.0"
+        "plone.restapi>=8.34.0",
     ],
     extras_require={
         "test": [
