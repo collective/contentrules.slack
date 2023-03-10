@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.1 (unreleased)
+## 2.0.1 (2023-03-10)
 
 
 - Use [`pytest_plone`](https://pypi.org/project/pytest-plone/)
