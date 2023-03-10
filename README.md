@@ -22,13 +22,10 @@
 
 </div>
 
-Features
---------
-
 **contentrules.slack** is a package providing a [Plone](https://plone.org/) content rules action to post a message on Slack.
 
-Documentation
--------------
+
+# Installation
 
 This package supports Plone sites using Volto and ClassicUI.
 
@@ -36,9 +33,6 @@ For proper Volto support, the requirements are:
 
 * plone.restapi >= 8.34.0
 * Volto >= 16.10.0
-
-Installation
-------------
 
 Add **contentrules.slack** to the Plone installation using `pip`:
 
@@ -62,22 +56,20 @@ Start Plone and go to the `Content Rules` Control Panel.
 No additional configuration is needed for Volto support.
 
 
-Source Code and Contributions
------------------------------
+## Source Code and Contributions
 
 If you want to help with the development (improvement, update, bug-fixing, ...) of `contentrules.slack` this is a great idea!
 
 - [Issue Tracker](https://github.com/collective/contentrules.slack/issues)
 - [Source Code](https://github.com/collective/contentrules.slack/)
-- [Documentation](https://contentrulesslack.readthedocs.io/)
+- [Documentation](https://collective.github.io/contentrules.slack)
 
 
 We appreciate any contribution and if a release is needed to be done on PyPI, please just contact one of us.
 
-Development
------------
+## Development
 
-You need a working `python` environment (system, virtualenv, pyenv, etc) version 3.8 or superior.
+You need a working `python` environment (system, `virtualenv`, `pyenv`, etc) version 3.8 or superior.
 
 Then install the dependencies and a development instance using:
 
@@ -88,8 +80,7 @@ make build
 To run tests for this package:
 By default, we use the latest Plone version in the `6.x` series.
 
-Translations
-------------
+## Translations
 
 This product has been translated into:
 
@@ -98,13 +89,11 @@ This product has been translated into:
 - Deutsch (Yael Biran)
 - Español (Álvaro Hurtado Mochón)
 
-License
--------
+## License
 
 The project is licensed under GPLv2.
 
-One Last Thing
---------------
+## One Last Thing
 
 Originally Made in Berlin, with love, by your friends @ Briefy and Pendect.
 

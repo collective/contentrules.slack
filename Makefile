@@ -19,7 +19,7 @@ PLONE6=6.0-latest
 
 BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-CODE_QUALITY_VERSION=2.0.2
+CODE_QUALITY_VERSION=2.1.0
 ifndef LOG_LEVEL
 	LOG_LEVEL=INFO
 endif
@@ -27,6 +27,9 @@ CURRENT_USER=$$(whoami)
 USER_INFO=$$(id -u ${CURRENT_USER}):$$(getent group ${CURRENT_USER}|cut -d: -f3)
 LINT=docker run --rm -e LOG_LEVEL="${LOG_LEVEL}" -v "${BACKEND_FOLDER}":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} check
 FORMAT=docker run --rm --user="${USER_INFO}" -e LOG_LEVEL="${LOG_LEVEL}" -v "${BACKEND_FOLDER}":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} format
+
+DOCS_DIR=${BACKEND_FOLDER}/docs
+
 
 all: build
 
@@ -102,3 +105,19 @@ test: ## run tests
 .PHONY: start
 start: ## Start a Plone instance on localhost:8080
 	PYTHONWARNINGS=ignore ./bin/runwsgi etc/zope.ini
+
+
+# Docs
+bin/sphinx-build: bin/pip
+	bin/pip install -r requirements-docs.txt
+
+.PHONY: build-docs
+build-docs: bin/sphinx-build  ## Build the documentation
+	./bin/sphinx-build \
+		-b html $(DOCS_DIR) "$(DOCS_DIR)/_build/html"
+
+.PHONY: livehtml
+livehtml: bin/sphinx-build  ## Rebuild Sphinx documentation on changes, with live-reload in the browser
+	./bin/sphinx-autobuild \
+		--ignore "*.swp" \
+		-b html $(DOCS_DIR) "$(DOCS_DIR)/_build/html"

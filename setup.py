@@ -40,7 +40,7 @@ setup(
         "PyPI": "https://pypi.python.org/pypi/contentrules.slack",
         "Source": "https://github.com/collective/contentrules.slack",
         "Tracker": "https://github.com/collective/contentrules.slack/issues",
-        "Documentation": "https://contentrules.slack.readthedocs.io/en/latest/",
+        "Documentation": "https://collective.github.io/contentrules.slack",
     },
     packages=find_packages("src", exclude=["ez_setup"]),
     namespace_packages=["contentrules"],

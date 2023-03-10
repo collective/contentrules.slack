@@ -3,7 +3,9 @@
 ## 2.0.1 (unreleased)
 
 
-- Nothing changed yet.
+- Deploy documentation to https://collective.github.io/contentrules.slack
+  [ericof]
+
 
 
 ## 2.0.0 (2023-02-07)
