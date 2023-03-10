@@ -13,7 +13,7 @@ long_description = f"""
 
 setup(
     name="contentrules.slack",
-    version="2.0.1",
+    version="2.0.2.dev0",
     description="Slack content rule action for Plone.",
     long_description=long_description,
     long_description_content_type="text/markdown",
