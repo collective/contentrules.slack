@@ -4,6 +4,9 @@ testpaths = [
     "tests",
 ]
 
+[tool.check-manifest]
+ignore = ["docs/_build/*"]
+
 [tool.black]
 line-length = 88
 target-version = ['py38']

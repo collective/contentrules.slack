@@ -1,7 +1,11 @@
 graft src/contentrules
+graft tests
 graft docs
+prune docs/_build
+include .editorconfig
 include *.md
 include *.GPL
 include *.txt
 include Makefile
 global-exclude *.pyc
+global-exclude .DS_Store
