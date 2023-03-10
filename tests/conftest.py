@@ -1,18 +1,14 @@
 from contentrules.slack.testing import CRSLACK_INTEGRATION_TESTING
 from plone import api
+from pytest_plone import fixtures_factory
 
-import gocept.pytestlayer.fixture
 import pytest
 
 
-globals().update(
-    gocept.pytestlayer.fixture.create(
-        CRSLACK_INTEGRATION_TESTING,
-        session_fixture_name="integration_session",
-        class_fixture_name="integration_class",
-        function_fixture_name="integration",
-    )
-)
+pytest_plugins = ["pytest_plone"]
+
+
+globals().update(fixtures_factory(((CRSLACK_INTEGRATION_TESTING, "integration"),)))
 
 
 @pytest.fixture(autouse=True)
@@ -48,11 +44,6 @@ def folder(portal):
 @pytest.fixture
 def doc(folder):
     return folder.d1
-
-
-@pytest.fixture
-def http_request(integration):
-    return integration["request"]
 
 
 @pytest.fixture

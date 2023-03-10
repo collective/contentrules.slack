@@ -1,5 +1,5 @@
 [tool.pytest.ini_options]
-addopts = "--cov-report term --cov=contentrules.slack"
+addopts = "--cov-report term-missing --cov=contentrules.slack"
 testpaths = [
     "tests",
 ]

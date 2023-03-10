@@ -3,6 +3,9 @@
 ## 2.0.1 (unreleased)
 
 
+- Use [`pytest_plone`](https://pypi.org/project/pytest-plone/)
+  [ericof]
+
 - Deploy documentation to https://collective.github.io/contentrules.slack
   [ericof]
 

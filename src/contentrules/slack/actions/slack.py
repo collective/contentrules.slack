@@ -1,16 +1,22 @@
 from contentrules.slack import _
 from contentrules.slack.settings import SLACK_WEBHOOK_URL
 from contentrules.slack.slack_notifier import notify_slack
+from contentrules.slack.utils import extract_fields_from_text
 from OFS.SimpleItem import SimpleItem
 from plone.app.contentrules.actions import ActionAddForm
 from plone.app.contentrules.actions import ActionEditForm
 from plone.app.contentrules.browser.formhelper import ContentRuleFormWrapper
 from plone.contentrules.rule.interfaces import IExecutable
 from plone.contentrules.rule.interfaces import IRuleElementData
+from plone.stringinterp.dollarReplace import Interpolator
 from plone.stringinterp.interfaces import IStringInterpolator
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from threading import Thread
+from typing import Any
+from typing import List
 from zope import schema
 from zope.component import adapter
+from zope.i18nmessageid import Message
 from zope.interface import implementer
 from zope.interface import Interface
 
@@ -20,7 +26,7 @@ import logging
 logger = logging.getLogger("contentrules.slack")
 
 
-def safe_attr(element, attr):
+def safe_attr(element: "SlackAction", attr: str) -> Any:
     """Return attribute value as string."""
     value = getattr(element, attr)
     return value if value is not None else ""
@@ -101,21 +107,21 @@ class ISlackAction(Interface):
 class SlackAction(SimpleItem):
     """The implementation of the action defined before."""
 
-    webhook_url = SLACK_WEBHOOK_URL
-    channel = ""
-    pretext = ""
-    title = ""
-    title_link = "${absolute_url}"
-    text = ""
-    color = ""
-    icon = ""
-    username = ""
-    fields = ""
+    webhook_url: str = SLACK_WEBHOOK_URL
+    channel: str = ""
+    pretext: str = ""
+    title: str = ""
+    title_link: str = "${absolute_url}"
+    text: str = ""
+    color: str = ""
+    icon: str = ""
+    username: str = ""
+    fields: str = ""
 
-    element = "plone.actions.Slack"
+    element: str = "plone.actions.Slack"
 
     @property
-    def summary(self):
+    def summary(self) -> Message:
         return _(
             "Post a message on channel ${channel}",
             mapping=dict(channel=self.channel),
@@ -124,41 +130,33 @@ class SlackAction(SimpleItem):
 
 @implementer(IExecutable)
 @adapter(Interface, ISlackAction, Interface)
-class SlackActionExecutor(object):
+class SlackActionExecutor:
     """Executor for the Slack Action."""
 
-    def __init__(self, context, element, event):
+    def __init__(self, context, element: "SlackAction", event):
         """Initialize action executor."""
         self.context = context
         self.element = element
         self.event = event
 
-    def _process_fields_(self, interpolator):
+    def _process_fields_(self, interpolator: Interpolator) -> List[dict]:
         """Process element.fields and return a list of dicts.
 
         Read more at: https://api.slack.com/docs/message-attachments
 
         :returns: Message attachment fields.
-        :rtype: list of dictionaries.
         """
         element = self.element
         fields_spec = element.fields or ""
-        fields = []
-        for item in fields_spec.split("\n"):
-            try:
-                title, value, short = item.split("|")
-            except ValueError:
-                continue
-            short = True if short.lower() == "true" else False
-            value = interpolator(value).strip()
-            fields.append({"title": title, "value": value, "short": short})
+        fields = extract_fields_from_text(fields_spec)
+        for item in fields:
+            item["value"] = interpolator(item["value"]).strip()
         return fields
 
-    def get_ftw_configuration(self):
+    def get_notifier_config(self) -> dict:
         """Return the configuration parameters used by ftw.slacker.
 
         :returns: Configuration parameters.
-        :rtype: dict.
         """
         params = {
             "webhook_url": self.element.webhook_url,
@@ -167,11 +165,10 @@ class SlackActionExecutor(object):
         }
         return params
 
-    def get_message_payload(self):
+    def get_message_payload(self) -> dict:
         """Process the action and return a dictionary with the Slack message payload.
 
         :returns: Slack message payload.
-        :rtype: dict.
         """
         obj = self.event.object
         element = self.element
@@ -202,7 +199,7 @@ class SlackActionExecutor(object):
         }
         return payload
 
-    def notify_slack(self, payload):
+    def notify_slack(self, payload: dict) -> Thread:
         """Send message to Slack using ftw.slacker.notify_slack.
 
         :param payload: Payload to be sent to ftw.slacker.notify_slack.
@@ -210,17 +207,17 @@ class SlackActionExecutor(object):
         """
         return notify_slack(**payload)
 
-    def get_payload(self):
+    def get_payload(self) -> dict:
         """Return payload to be sent to ftw.slacker.notify_slack.
 
         :returns: Payload to be sent to ftw.slacker.notify_slack.
         :rtype: dict
         """
         payload = self.get_message_payload()
-        payload.update(self.get_ftw_configuration())
+        payload.update(self.get_notifier_config())
         return payload
 
-    def __call__(self):
+    def __call__(self) -> bool:
         """Execute the action."""
         payload = self.get_payload()
         self.notify_slack(payload)

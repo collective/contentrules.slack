@@ -58,17 +58,13 @@ setup(
     extras_require={
         "test": [
             "gocept.pytestlayer",
-            "alabaster",
-            "Jinja2",
-            "snowballstemmer",
-            "sphinx-bootstrap-theme",
-            "Sphinx",
-            "zest.releaser[recommended]",
-            "plone.app.testing",
             "plone.app.robotframework[debug]",
+            "plone.app.testing",
             "plone.restapi[test]",
-            "pytest",
             "pytest-cov",
+            "pytest-plone>=0.2.0",
+            "pytest",
+            "zest.releaser[recommended]",
         ],
     },
     entry_points="""
