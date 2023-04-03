@@ -49,7 +49,7 @@ setup(
     zip_safe=False,
     python_requires=">=3.8.0",
     install_requires=[
-        "httpx",
+        "requests",
         "prettyconf",
         "Plone",
         "setuptools",

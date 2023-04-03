@@ -4,7 +4,7 @@ from threading import Thread
 from zope.component import getUtility
 from zope.interface import implementer
 
-import httpx
+import requests
 
 
 def notify_slack(*args, **kwargs) -> Thread:
@@ -57,7 +57,7 @@ class SlackNotifier:
         self, webhook_url: str = "", timeout: int = 2, verify: bool = True, **payload
     ):
         """Actually performs the request."""
-        httpx.post(
+        requests.post(
             webhook_url,
             timeout=timeout,
             verify=verify,

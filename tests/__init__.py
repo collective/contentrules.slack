@@ -7,7 +7,7 @@ class ResponseStub:
         pass
 
 
-class HTTPXMock:
+class RequestsMock:
     def __init__(self):
         self.posts = []
 
@@ -19,9 +19,9 @@ class HTTPXMock:
     @classmethod
     @contextmanager
     def installed(kls):
-        original_requests = slack_notifier.httpx
-        mock_requests = slack_notifier.httpx = kls()
+        original_requests = slack_notifier.requests
+        mock_requests = slack_notifier.requests = kls()
         try:
             yield mock_requests
         finally:
-            slack_notifier.httpx = original_requests
+            slack_notifier.requests = original_requests

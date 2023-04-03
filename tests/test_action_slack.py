@@ -1,4 +1,4 @@
-from . import HTTPXMock
+from . import RequestsMock
 from contentrules.slack.actions.slack import SlackAction
 from contentrules.slack.actions.slack import SlackAddFormView
 from contentrules.slack.actions.slack import SlackEditFormView
@@ -111,7 +111,7 @@ class TestAction:
 
     def test_execute(self, slack_action, wait_for, folder, doc):
         ex = getMultiAdapter((folder, slack_action, DummyEvent(doc)), IExecutable)
-        with HTTPXMock.installed() as requests:
+        with RequestsMock.installed() as requests:
             payload = ex.get_payload()
             wait_for(ex.notify_slack(payload))
             assert len(requests.posts) == 1
