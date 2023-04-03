@@ -3,8 +3,11 @@
 ## 2.0.2 (unreleased)
 
 
-- Nothing changed yet.
+- Use `requests` instead of `httpx`, as the former is already distributed with Plone.
+  [ericof]
 
+- Update Sphinx theme used in the documentation
+  [ericof]
 
 ## 2.0.1 (2023-03-10)
 
