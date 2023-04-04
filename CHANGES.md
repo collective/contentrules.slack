@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.2 (unreleased)
+## 2.0.2 (2023-04-04)
 
 
 - Use `requests` instead of `httpx`, as the former is already distributed with Plone.
