@@ -1,0 +1,1 @@
+Add type hints and reStructuredText docstrings to the whole codebase, and check types with `mypy` against `plone-stubs` (`make mypy`, also run by `make lint`). @ericof

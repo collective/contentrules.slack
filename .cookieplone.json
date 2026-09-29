@@ -1,0 +1,14 @@
+{
+    "title": "Slack integration for Plone",
+    "description": "Slack content rule action for Plone",
+    "author": "\u00c9rico Andrei",
+    "email": "ericof@plone.org",
+    "github_organization": "collective",
+    "use_prerelease_versions": "No",
+    "plone_version": "6.2.2",
+    "python_package_name": "contentrules.slack",
+    "feature_headless": false,
+    "initialize_ci": true,
+    "initialize_documentation": true,
+    "__template__": "backend_addon"
+}

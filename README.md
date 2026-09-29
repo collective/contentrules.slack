@@ -1,100 +1,112 @@
-<div align="center"><img alt="logo" src="./docs/_static/images/icon.png" width="70" /></div>
-
-<h1 align="center">contentrules.slack</h1>
-
-<div align="center">
+# contentrules.slack
 
 [![PyPI](https://img.shields.io/pypi/v/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
-[![PyPI - Wheel](https://img.shields.io/pypi/wheel/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
-[![PyPI - License](https://img.shields.io/pypi/l/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
-[![PyPI - Status](https://img.shields.io/pypi/status/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
-
-
 [![PyPI - Plone Versions](https://img.shields.io/pypi/frameworkversions/plone/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
+[![PyPI - License](https://img.shields.io/pypi/l/contentrules.slack)](https://pypi.org/project/contentrules.slack/)
+[![CI](https://github.com/collective/contentrules.slack/actions/workflows/main.yml/badge.svg)](https://github.com/collective/contentrules.slack/actions/workflows/main.yml)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://collective.github.io/contentrules.slack/)
 
-[![Code analysis checks](https://github.com/collective/contentrules.slack/actions/workflows/code-analysis.yml/badge.svg)](https://github.com/collective/contentrules.slack/actions/workflows/code-analysis.yml)
-[![Tests](https://github.com/collective/contentrules.slack/actions/workflows/tests.yml/badge.svg)](https://github.com/collective/contentrules.slack/actions/workflows/tests.yml)
-![Code Style](https://img.shields.io/badge/Code%20Style-Black-000000)
+**Post a message to Slack whenever something happens in your Plone site.**
 
-[![GitHub contributors](https://img.shields.io/github/contributors/collective/contentrules.slack)](https://github.com/collective/contentrules.slack)
-[![GitHub Repo stars](https://img.shields.io/github/stars/collective/contentrules.slack?style=social)](https://github.com/collective/contentrules.slack)
+contentrules.slack adds a **Post a message to Slack** action to Plone's content rules.
+Pick any event Plone content rules support — a page is published, content is removed, a user logs in — and your team hears about it in the Slack channel of your choice, with the details that matter.
 
-</div>
+![A Slack message posted by Plone, announcing that a user logged in](https://raw.githubusercontent.com/collective/contentrules.slack/main/docs/src/_static/images/classic-ui/Screenshot-07.png)
 
-**contentrules.slack** is a package providing a [Plone](https://plone.org/) content rules action to post a message on Slack.
+## Why use it
 
+- **No code.** Site administrators set up notifications from the Content Rules control panel, in Volto or Classic UI.
+- **Messages with context.** Use `${...}` variables, such as `${title}`, `${absolute_url}`, `${review_state_title}`, or `${user_fullname}`, to say what changed, where, and who changed it.
+- **Scoped to where it matters.** Assign a rule to the whole site, or only to one folder.
+- **Never slows editors down.** Messages are sent in the background, so publishing never waits for Slack, and never fails because of it.
+- **Safe for staging.** Set one environment variable to silence every notification on a development or staging copy of your site.
 
-# Installation
+## Features
 
-This package supports Plone sites using Volto and ClassicUI.
+- A content rule action, available for every triggering event and content type.
+- Slack message attachments with pretext, title and link, text, color, and a table of fields.
+- Failed deliveries logged to the Plone log, without leaking the webhook address.
+- A Python API, `notify_slack`, to post to Slack from your own code.
+- A user interface in English, Brazilian Portuguese, German, and Spanish.
 
-For proper Volto support, the requirements are:
+## Compatibility
 
-* plone.restapi >= 8.34.0
-* Volto >= 16.10.0
+| contentrules.slack | Plone | Python |
+|---|---|---|
+| 3.x | 6.2 | 3.10 to 3.14 |
+| 3.x | 6.1 | 3.10 to 3.13 |
+| 2.x | 6.0 | 3.8 to 3.11 |
 
-Add **contentrules.slack** to the Plone installation using `pip`:
+## Installation
 
-```bash
+Add `contentrules.slack` to the dependencies of your Plone project, for example in its `pyproject.toml`:
+
+```toml
+[project]
+dependencies = [
+    "Products.CMFPlone",
+    "contentrules.slack",
+]
+```
+
+Or install it with pip, in the same Python environment as Plone:
+
+```shell
 pip install contentrules.slack
 ```
 
-or add it as a dependency on your package's `setup.py`
+Restart Plone.
+There is nothing to activate in the Add-ons control panel: **Post a message to Slack** is now available in **Site Setup → Content Rules**.
 
-```python
-    install_requires = [
-        "contentrules.slack",
-        "Plone",
-        "plone.restapi",
-        "setuptools",
-    ],
+## Quick start
+
+1. Create an [incoming webhook](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/) in Slack.
+2. In **Site Setup → Content Rules**, add a rule, and choose its triggering event.
+3. Add the **Post a message to Slack** action, and paste the webhook address.
+4. Assign the rule to the whole site, or to a folder.
+
+The documentation walks you through each step, with screenshots, for [Volto](https://collective.github.io/contentrules.slack/how-to/volto.html) and [Classic UI](https://collective.github.io/contentrules.slack/how-to/classic-ui.html).
+
+## Configuration
+
+| Environment variable | Effect |
+|---|---|
+| `DEACTIVATE_SLACK_NOTIFICATION` | Set to `deactivate` to stop the whole instance from posting to Slack. |
+| `SLACK_WEBHOOK_URL` | Webhook used by `notify_slack` calls that do not pass one. |
+
+Both are read once, at startup.
+See the [configuration reference](https://collective.github.io/contentrules.slack/reference/configuration.html) for details.
+
+## Documentation
+
+The full documentation is at **https://collective.github.io/contentrules.slack/**.
+
+- [How-to guides](https://collective.github.io/contentrules.slack/how-to/index.html): install the add-on, and create rules in Volto or Classic UI.
+- [Reference](https://collective.github.io/contentrules.slack/reference/index.html): every field of the action, the settings, and the Python API.
+- [Explanation](https://collective.github.io/contentrules.slack/explanation/index.html): how messages are delivered, and what happens when Slack fails.
+
+## Contributing
+
+- [Source code](https://github.com/collective/contentrules.slack)
+- [Issue tracker](https://github.com/collective/contentrules.slack/issues)
+- [Contributing guide](https://collective.github.io/contentrules.slack/project/contributing.html)
+
+To set up a development environment, you need [uv](https://docs.astral.sh/uv/), Make, and Git.
+
+```shell
+git clone https://github.com/collective/contentrules.slack.git
+cd contentrules.slack
+make install
+make test
 ```
-
-Start Plone and go to the `Content Rules` Control Panel.
-
-No additional configuration is needed for Volto support.
-
-
-## Source Code and Contributions
-
-If you want to help with the development (improvement, update, bug-fixing, ...) of `contentrules.slack` this is a great idea!
-
-- [Issue Tracker](https://github.com/collective/contentrules.slack/issues)
-- [Source Code](https://github.com/collective/contentrules.slack/)
-- [Documentation](https://collective.github.io/contentrules.slack)
-
-
-We appreciate any contribution and if a release is needed to be done on PyPI, please just contact one of us.
-
-## Development
-
-You need a working `python` environment (system, `virtualenv`, `pyenv`, etc) version 3.8 or superior.
-
-Then install the dependencies and a development instance using:
-
-```bash
-make build
-```
-
-To run tests for this package:
-By default, we use the latest Plone version in the `6.x` series.
-
-## Translations
-
-This product has been translated into:
-
-- English (Érico Andrei)
-- Português do Brasil (Rudá Porto)
-- Deutsch (Yael Biran)
-- Español (Álvaro Hurtado Mochón)
 
 ## License
 
-The project is licensed under GPLv2.
+This project is licensed under the GNU General Public License, version 2.
 
-## One Last Thing
+## Credits
 
-Originally Made in Berlin, with love, by your friends @ Briefy and Pendect.
+Originally made in Berlin by Briefy and Pendect.
 
-Now maintained by the [Plone Collective](https://github.com/collective)
+Now maintained by the [Plone Collective](https://github.com/collective).

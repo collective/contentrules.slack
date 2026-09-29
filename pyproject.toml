@@ -1,50 +1,235 @@
-[tool.pytest.ini_options]
-addopts = "--cov-report term-missing --cov=contentrules.slack"
-testpaths = [
-    "tests",
+[project]
+name = "contentrules.slack"
+dynamic = ["version", "readme"]
+description = "Slack content rule action for Plone"
+license = "GPL-2.0-only"
+requires-python = ">=3.10"
+authors = [
+    { name = "Érico Andrei", email = "ericof@plone.org" },
+]
+keywords = [
+    "CMS",
+    "Plone",
+    "Python",
+    "Slack",
+    "Content Rules"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Plone",
+    "Framework :: Plone :: 6.1",
+    "Framework :: Plone :: 6.2",
+    "Framework :: Plone :: Addon",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "Products.CMFPlone>=6.1",
+    "plone.api",
+    "plone.restapi",
+    "prettyconf",
+    "requests",
 ]
 
-[tool.check-manifest]
-ignore = ["docs/_build/*"]
+[project.optional-dependencies]
+test = [
+    "horse-with-no-namespace",
+    "mypy",
+    "plone.app.testing",
+    "plone.classicui",
+    "plone.restapi[test]",
+    "pytest",
+    "pytest-cov",
+    "pytest-plone>=1.1.0",
+    "types-requests",
+]
+release = [
+    "zest.releaser[recommended]",
+    "zestreleaser.towncrier",
+    "zest.pocompile",
+]
+docs = [
+    "graphviz",
+    "linkify-it-py",
+    "myst-parser",
+    "plone-sphinx-theme",
+    "sphinx-autobuild",
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinx-examples",
+    "sphinx-notfound-page",
+    "sphinx-reredirects",
+    "sphinx-sitemap",
+    "sphinx-tippy",
+    "sphinxcontrib-httpdomain",
+    "sphinxcontrib-httpexample",
+    "sphinxcontrib-mermaid",
+    "sphinxcontrib-video",
+    "sphinxcontrib-youtube",
+    "sphinxext-opengraph",
+    "vale",
+]
 
-[tool.black]
+[project.urls]
+Homepage = "https://github.com/collective/contentrules.slack"
+Documentation = "https://collective.github.io/contentrules.slack"
+PyPI = "https://pypi.org/project/contentrules.slack"
+Source = "https://github.com/collective/contentrules.slack"
+Tracker = "https://github.com/collective/contentrules.slack/issues"
+
+
+[project.entry-points."z3c.autoinclude.plugin"]
+target = "plone"
+
+[tool.uv]
+managed = false
+
+[tool.hatch.version]
+path = "src/contentrules/slack/__init__.py"
+
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+strict-naming = true
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/contentrules"]
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+text = "\n\n---\n\n"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "CHANGELOG.md"
+
+[tool.towncrier]
+directory = "news/"
+filename = "CHANGELOG.md"
+start_string = "<!-- towncrier release notes start -->\n"
+title_format = "## {version} ({project_date})"
+template = "news/.changelog_template.jinja"
+issue_format = "[#{issue}](https://github.com/collective/contentrules.slack/issues/{issue})"
+underlines = ["", "", ""]
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Feature"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Bugfix"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "internal"
+name = "Internal"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "documentation"
+name = "Documentation"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "tests"
+name = "Tests"
+showcontent = true
+
+[tool.ruff]
+target-version = "py310"
 line-length = 88
-target-version = ['py38']
-include = '\.pyi?$'
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-  )/
-)
-'''
+fix = true
+lint.select = [
+    # flake8-2020
+    "YTT",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-builtins
+    "A",
+    # flake8-comprehensions
+    "C4",
+    # flake8-debugger
+    "T10",
+    # flake8-simplify
+    "SIM",
+    # mccabe
+    "C90",
+    # pycodestyle
+    "E", "W",
+    # pyflakes
+    "F",
+    # pygrep-hooks
+    "PGH",
+    # pyupgrade
+    "UP",
+    # ruff
+    "RUF",
+]
+lint.ignore = [
+    # DoNotAssignLambda
+    "E731",
+]
 
-[tool.isort]
-profile = "black"
-force_alphabetical_sort = true
-force_single_line = true
-lines_after_imports = 2
-line_length = 120
+[tool.ruff.lint.isort]
+case-sensitive = false
+no-sections = true
+force-single-line = true
+from-first = true
+lines-after-imports = 2
+lines-between-types = 1
+order-by-type = false
 
-[tool.flakeheaven]
-format="grouped"
-max_line_length=88
-show_source=true
-max-complexity=25
+[tool.ruff.format]
+preview = true
 
-[tool.flakeheaven.plugins]
-pycodestyle = ["+*"]
-pyflakes = ["+*"]
-"flake8-*" = ["+*"]
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501", "RUF001", "S101"]
 
-[tool.plone-code-analysis]
-paths = "setup.py src/ docs/conf.py tests/"
+[tool.mypy]
+namespace_packages = true
+explicit_package_bases = true
+mypy_path = "src"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source_pkgs = ["contentrules.slack", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/contentrules/slack/locales/*.py",
+]
+
+[tool.coverage.report]
+fail_under = 95
+
+[tool.zest-releaser]
+python-file-with-version = "src/contentrules/slack/__init__.py"

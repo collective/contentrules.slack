@@ -51,7 +51,7 @@ msgid "Fields"
 msgstr "Felder"
 
 #: contentrules/slack/actions/slack.py:91
-msgid "Fields are added to the bottom of the Slack message like a small table.Please add one definition per line in the format:\"title|value|Short\", i.e:\"Review State|${review_state_title}|True\""
+msgid "Fields are added to the bottom of the Slack message like a small table. Please add one definition per line in the format:\"title|value|Short\", i.e:\"Review State|${review_state_title}|True\""
 msgstr "Felder werden zu einer Slack Nachricht unten hingefügt wie eine kleine Tabelle. Bitte eine Definition pro Zeile hinfügen in diesem Format:\"title|value|Short\", i.e:\"Review State|${review_state_title}|True\""
 
 #: contentrules/slack/actions/slack.py:79
@@ -111,8 +111,8 @@ msgid "Title Link"
 msgstr "Titel-Link"
 
 #: contentrules/slack/actions/slack.py:34
-msgid "URL configuration for this integration. i.e.:\"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY\""
-msgstr "URL Konfiguration für diese Integration. i.e.:\"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY\""
+msgid "URL configuration for this integration. i.e.:\"https://hooks.slack.com/services/T.../B.../...\""
+msgstr "URL Konfiguration für diese Integration. i.e.:\"https://hooks.slack.com/services/T.../B.../...\""
 
 #: contentrules/slack/actions/slack.py:84
 msgid "Username"
