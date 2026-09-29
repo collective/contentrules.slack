@@ -31,7 +31,7 @@ cd contentrules.slack
 make install
 ```
 
-`make install` creates a Python virtual environment in `.venv`, with Plone, this package, and the tools used for testing and documentation.
+`make install` creates a Python virtual environment in `.venv`, with Plone, this package, and the tools used for testing.
 It also creates the configuration of a Plone instance in `instance/`.
 
 To start that instance, and create a Plone site in it, run the following commands.
@@ -70,6 +70,7 @@ make lint
 make docs-html
 ```
 
+The first `docs-*` command installs the documentation tools into `.venv`.
 The HTML pages are written to `docs/_build/html`.
 `make docs-livehtml` serves them, and rebuilds them on every change.
 `make docs-vale` checks spelling and style.

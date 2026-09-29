@@ -161,26 +161,36 @@ release: $(VENV_FOLDER) ## Create a release
 # Documentation
 ############################################
 
+# The docs extra is installed on demand, not by make install: the Sphinx
+# stack cannot resolve against every Plone and Python version in the test
+# matrix.
+$(BIN_FOLDER)/sphinx-build: $(VENV_FOLDER)
+	@echo "$(GREEN)==> Install documentation dependencies$(RESET)"
+	@uv pip install -e ".[docs]" -c constraints-mxdev.txt
+
+.PHONY: docs-install
+docs-install: $(BIN_FOLDER)/sphinx-build ## Install documentation dependencies
+
 .PHONY: docs-html
-docs-html: $(VENV_FOLDER) ## Build HTML documentation
+docs-html: $(BIN_FOLDER)/sphinx-build ## Build HTML documentation
 	@make -C ./docs html
 
 .PHONY: docs-livehtml
-docs-livehtml: $(VENV_FOLDER) ## Build documentation and serve it
+docs-livehtml: $(BIN_FOLDER)/sphinx-build ## Build documentation and serve it
 	@make -C ./docs livehtml
 
 .PHONY: docs-vale
-docs-vale: $(VENV_FOLDER) ## Run vale on the documentation
+docs-vale: $(BIN_FOLDER)/sphinx-build ## Run vale on the documentation
 	@make -C ./docs vale
 
 .PHONY: docs-linkcheckbroken
-docs-linkcheckbroken: $(VENV_FOLDER) ## Run checks for broken links
+docs-linkcheckbroken: $(BIN_FOLDER)/sphinx-build ## Run checks for broken links
 	@make -C ./docs linkcheckbroken
 
 .PHONY: docs-linkcheck
-docs-linkcheck: $(VENV_FOLDER) ## Check all links in the documentation
+docs-linkcheck: $(BIN_FOLDER)/sphinx-build ## Check all links in the documentation
 	@make -C ./docs linkcheck
 
 .PHONY: docs-test
-docs-test: $(VENV_FOLDER) ## Run tests on the documentation
+docs-test: $(BIN_FOLDER)/sphinx-build ## Run tests on the documentation
 	@make -C ./docs test
