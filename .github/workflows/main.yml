@@ -42,6 +42,22 @@ jobs:
       python-version: ${{ needs.config.outputs.python-version }}
       plone-version: ${{ needs.config.outputs.plone-version }}
 
+  docs:
+    name: "Generate documentation"
+    uses: ./.github/workflows/docs.yml
+    # The deploy job of docs.yml publishes to GitHub Pages; a called workflow
+    # cannot hold more permissions than its caller grants.
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    with:
+      python-version: "3.14"
+      docs-directory: "docs"
+      working-directory: "."
+      check-links: true
+      check-vale: true
+
   report:
     name: "Final report"
     if: ${{ always() }}
@@ -51,6 +67,7 @@ jobs:
       - lint
       - test
       - coverage
+      - docs
     steps:
       - name: Report
         shell: bash
@@ -62,3 +79,4 @@ jobs:
           echo '| Lint | ${{ needs.lint.result }} |' >> $GITHUB_STEP_SUMMARY
           echo '| Test | ${{ needs.test.result }} |' >> $GITHUB_STEP_SUMMARY
           echo '| Coverage | ${{ needs.coverage.result }} |' >> $GITHUB_STEP_SUMMARY
+          echo '| Docs | ${{ needs.docs.result }} |' >> $GITHUB_STEP_SUMMARY

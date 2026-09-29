@@ -54,9 +54,31 @@ release = [
     "zestreleaser.towncrier",
     "zest.pocompile",
 ]
+docs = [
+    "graphviz",
+    "linkify-it-py",
+    "myst-parser",
+    "plone-sphinx-theme",
+    "sphinx-autobuild",
+    "sphinx-copybutton",
+    "sphinx-design",
+    "sphinx-examples",
+    "sphinx-notfound-page",
+    "sphinx-reredirects",
+    "sphinx-sitemap",
+    "sphinx-tippy",
+    "sphinxcontrib-httpdomain",
+    "sphinxcontrib-httpexample",
+    "sphinxcontrib-mermaid",
+    "sphinxcontrib-video",
+    "sphinxcontrib-youtube",
+    "sphinxext-opengraph",
+    "vale",
+]
 
 [project.urls]
 Homepage = "https://github.com/collective/contentrules.slack"
+Documentation = "https://collective.github.io/contentrules.slack"
 PyPI = "https://pypi.org/project/contentrules.slack"
 Source = "https://github.com/collective/contentrules.slack"
 Tracker = "https://github.com/collective/contentrules.slack/issues"
