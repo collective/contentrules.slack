@@ -39,7 +39,7 @@ class ISlackAction(Interface):
         title=_("Webhook url"),
         description=_(
             "URL configuration for this integration. "
-            'i.e.:"https://hooks.slack.com/services/T00000000/B00000000/YYYYYYYYYYYYYYYYYYYYYYYY"',  # noQA
+            'i.e.:"https://hooks.slack.com/services/T.../B.../..."',  # noQA
         ),
         required=True,
     )
@@ -95,7 +95,7 @@ class ISlackAction(Interface):
     fields = schema.Text(
         title=_("Fields"),
         description=_(
-            "Fields are added to the bottom of the Slack message like a small table."
+            "Fields are added to the bottom of the Slack message like a small table. "
             'Please add one definition per line in the format:"title|value|Short", i.e:'
             '"Review State|${review_state_title}|True"',
         ),
