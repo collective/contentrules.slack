@@ -57,6 +57,11 @@ requirements-mxdev.txt: pyproject.toml mx.ini ## Generate constraints file
 	@echo "$(GREEN)==> Generate constraints file$(RESET)"
 	@echo '-c https://dist.plone.org/release/$(PLONE_VERSION)/constraints.txt' > requirements.txt
 	@uvx 'mxdev[uv]' -c mx.ini
+	@# plone-stubs is not on PyPI; install from git only on Python >= 3.12.
+	@# The marker has to live here (not in pyproject.toml or mx.ini), since
+	@# uv pip install does not honor [tool.uv.sources], and mxdev sections
+	@# do not support PEP 508 markers per section.
+	@echo "plone-stubs @ git+https://github.com/plone/plone-stubs.git ; python_version >= '3.12'" >> requirements-mxdev.txt
 
 $(VENV_FOLDER): requirements-mxdev.txt ## Install dependencies
 	@echo "$(GREEN)==> Install environment$(RESET)"
@@ -102,6 +107,11 @@ create-site: $(VENV_FOLDER) instance/etc/zope.ini ## Create a new site from scra
 	@$(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/create_site.py
 
 # QA
+.PHONY: mypy
+mypy: $(VENV_FOLDER) ## Type checking
+	@echo "$(GREEN)==> Run mypy$(RESET)"
+	@$(BIN_FOLDER)/mypy src
+
 .PHONY: lint
 lint: ## Check and fix code base according to Plone standards
 	@echo "$(GREEN)==> Lint codebase$(RESET)"
@@ -109,6 +119,7 @@ lint: ## Check and fix code base according to Plone standards
 	@uvx pyroma@latest -d .
 	@uvx check-python-versions@latest .
 	@uvx zpretty@latest --check src
+	@$(MAKE) mypy
 
 .PHONY: format
 format: ## Check and fix code base according to Plone standards

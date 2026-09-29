@@ -1,1 +1,1 @@
-"""Content rules actions."""
+"""Content rule actions provided by this package."""

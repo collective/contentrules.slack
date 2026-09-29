@@ -23,7 +23,11 @@ i18ndude = "uvx i18ndude"
 excludes = '"*.html *json-schema*.xml"'
 
 
-def locale_folder_setup(domain: str):
+def locale_folder_setup(domain: str) -> None:
+    """Create the ``LC_MESSAGES`` catalog of any new language folder.
+
+    :param domain: The i18n domain.
+    """
     languages = [path for path in locale_path.glob("*") if path.is_dir()]
     for lang_folder in languages:
         lc_messages_path = lang_folder / "LC_MESSAGES"
@@ -40,7 +44,11 @@ def locale_folder_setup(domain: str):
             subprocess.call(cmd, shell=True)  # noQA: S602
 
 
-def _rebuild(domain: str):
+def _rebuild(domain: str) -> None:
+    """Rebuild the ``.pot`` template from the package sources.
+
+    :param domain: The i18n domain.
+    """
     cmd = (
         f"{i18ndude} rebuild-pot --pot {locale_path}/{domain}.pot "
         f"--exclude {excludes} "
@@ -49,7 +57,11 @@ def _rebuild(domain: str):
     subprocess.call(cmd, shell=True)  # noQA: S602
 
 
-def _sync(domain: str):
+def _sync(domain: str) -> None:
+    """Sync every language's ``.po`` catalog with the ``.pot`` template.
+
+    :param domain: The i18n domain.
+    """
     cmd = (
         f"{i18ndude} sync --pot {locale_path}/{domain}.pot "
         f"{locale_path}/*/LC_MESSAGES/{domain}.po"
@@ -57,7 +69,8 @@ def _sync(domain: str):
     subprocess.call(cmd, shell=True)  # noQA: S602
 
 
-def main():
+def main() -> None:
+    """Update the translations of every domain in this folder."""
     for domain in domains:
         logger.info(f"Updating translations for {domain}")
         locale_folder_setup(domain)

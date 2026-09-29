@@ -1,3 +1,11 @@
+"""Content rule action posting a message to a Slack channel.
+
+The action is configured through the content rules control panel. Its text
+settings accept ``${...}`` string interpolation variables, which are resolved
+against the object that triggered the rule when the action runs.
+"""
+
+from collections.abc import Callable
 from contentrules.slack import _
 from contentrules.slack.settings import SLACK_WEBHOOK_URL
 from contentrules.slack.slack_notifier import notify_slack
@@ -8,26 +16,32 @@ from plone.app.contentrules.actions import ActionEditForm
 from plone.app.contentrules.browser.formhelper import ContentRuleFormWrapper
 from plone.contentrules.rule.interfaces import IExecutable
 from plone.contentrules.rule.interfaces import IRuleElementData
-from plone.stringinterp.dollarReplace import Interpolator
 from plone.stringinterp.interfaces import IStringInterpolator
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from threading import Thread
 from typing import Any
-from typing import List
+from typing import cast
 from zope import schema
 from zope.component import adapter
 from zope.i18nmessageid import Message
 from zope.interface import implementer
 from zope.interface import Interface
-
-import logging
-
-
-logger = logging.getLogger("contentrules.slack")
+from zope.interface.interfaces import IObjectEvent
 
 
-def safe_attr(element: "SlackAction", attr: str) -> Any:
-    """Return attribute value as string."""
+#: Resolves the ``${...}`` variables of a string against an object.
+Interpolator = Callable[[str], str]
+
+
+def safe_attr(element: "SlackAction", attr: str) -> str:
+    """Read an action setting, treating ``None`` as an empty string.
+
+    Optional fields are stored as ``None`` when left empty in the form.
+
+    :param element: The Slack action.
+    :param attr: Name of the setting.
+    :returns: The setting's value, or ``""`` when it is ``None``.
+    """
     value = getattr(element, attr)
     return value if value is not None else ""
 
@@ -39,7 +53,7 @@ class ISlackAction(Interface):
         title=_("Webhook url"),
         description=_(
             "URL configuration for this integration. "
-            'i.e.:"https://hooks.slack.com/services/T.../B.../..."',  # noQA
+            'i.e.:"https://hooks.slack.com/services/T.../B.../..."',
         ),
         required=True,
     )
@@ -58,7 +72,7 @@ class ISlackAction(Interface):
     title = schema.TextLine(
         title=_("Title"),
         description=_(
-            "The title is displayed as larger, bold text near the top of a message attachment.",  # noQA
+            "The title is displayed as larger, bold text near the top of a message attachment.",  # noqa: E501
         ),
         required=True,
     )
@@ -105,7 +119,7 @@ class ISlackAction(Interface):
 
 @implementer(ISlackAction, IRuleElementData)
 class SlackAction(SimpleItem):
-    """The implementation of the action defined before."""
+    """Persistent settings of a Slack action, stored in a content rule."""
 
     webhook_url: str = SLACK_WEBHOOK_URL
     channel: str = ""
@@ -122,57 +136,66 @@ class SlackAction(SimpleItem):
 
     @property
     def summary(self) -> Message:
+        """Describe the action in the content rule's list of actions.
+
+        :returns: Translatable summary naming the target channel.
+        """
         return _(
             "Post a message on channel ${channel}",
-            mapping=dict(channel=self.channel),
+            mapping={"channel": self.channel},
         )
 
 
 @implementer(IExecutable)
 @adapter(Interface, ISlackAction, Interface)
 class SlackActionExecutor:
-    """Executor for the Slack Action."""
+    """Run a Slack action for the object that triggered a content rule."""
 
-    def __init__(self, context, element: "SlackAction", event):
-        """Initialize action executor."""
+    def __init__(self, context: Any, element: SlackAction, event: IObjectEvent):
+        """Initialize the executor.
+
+        :param context: Container where the rule is assigned.
+        :param element: The Slack action.
+        :param event: The event that triggered the rule. Its ``object`` is
+            the content the message is about.
+        """
         self.context = context
         self.element = element
         self.event = event
 
-    def _process_fields_(self, interpolator: Interpolator) -> List[dict]:
-        """Process element.fields and return a list of dicts.
+    def _process_fields(self, interpolator: Interpolator) -> list[dict]:
+        """Build the attachment fields, interpolating each value.
 
-        Read more at: https://api.slack.com/docs/message-attachments
+        Read more at: https://api.slack.com/reference/messaging/attachments
 
+        :param interpolator: Resolves ``${...}`` variables against the
+            triggering object.
         :returns: Message attachment fields.
         """
-        element = self.element
-        fields_spec = element.fields or ""
-        fields = extract_fields_from_text(fields_spec)
+        fields = extract_fields_from_text(self.element.fields or "")
         for item in fields:
             item["value"] = interpolator(item["value"]).strip()
         return fields
 
     def get_notifier_config(self) -> dict:
-        """Return the configuration parameters used by ftw.slacker.
+        """Return the request settings for :func:`notify_slack`.
 
-        :returns: Configuration parameters.
+        :returns: Webhook URL, timeout and SSL verification settings.
         """
-        params = {
+        return {
             "webhook_url": self.element.webhook_url,
             "timeout": 10,
             "verify": True,
         }
-        return params
 
     def get_message_payload(self) -> dict:
-        """Process the action and return a dictionary with the Slack message payload.
+        """Build the Slack message for the triggering object.
 
         :returns: Slack message payload.
         """
         obj = self.event.object
         element = self.element
-        interpolator = IStringInterpolator(obj)
+        interpolator = cast(Interpolator, IStringInterpolator(obj))
         title = interpolator(safe_attr(element, "title")).strip()
         title_link = interpolator(safe_attr(element, "title_link")).strip()
         pretext = interpolator(safe_attr(element, "pretext")).strip()
@@ -181,7 +204,7 @@ class SlackActionExecutor:
         icon = safe_attr(element, "icon")
         channel = safe_attr(element, "channel")
         username = safe_attr(element, "username")
-        payload = {
+        return {
             "attachments": [
                 {
                     "color": color,
@@ -189,7 +212,7 @@ class SlackActionExecutor:
                     "title": title,
                     "title_link": title_link,
                     "pretext": pretext,
-                    "fields": self._process_fields_(interpolator),
+                    "fields": self._process_fields(interpolator),
                 },
             ],
             "icon_emoji": icon,
@@ -197,37 +220,42 @@ class SlackActionExecutor:
             "username": username,
             "channel": channel,
         }
-        return payload
 
-    def notify_slack(self, payload: dict) -> Thread:
-        """Send message to Slack using ftw.slacker.notify_slack.
+    def notify_slack(self, payload: dict) -> Thread | None:
+        """Send a message to Slack.
 
-        :param payload: Payload to be sent to ftw.slacker.notify_slack.
-        :type payload: dict
+        :param payload: Keyword arguments for :func:`notify_slack`, as
+            returned by :meth:`get_payload`.
+        :returns: The thread performing the request, or ``None`` when the
+            notification is deactivated.
         """
         return notify_slack(**payload)
 
     def get_payload(self) -> dict:
-        """Return payload to be sent to ftw.slacker.notify_slack.
+        """Combine the message payload and the request settings.
 
-        :returns: Payload to be sent to ftw.slacker.notify_slack.
-        :rtype: dict
+        :returns: Keyword arguments for :func:`notify_slack`.
         """
         payload = self.get_message_payload()
         payload.update(self.get_notifier_config())
         return payload
 
     def __call__(self) -> bool:
-        """Execute the action."""
-        payload = self.get_payload()
-        self.notify_slack(payload)
+        """Execute the action.
+
+        The request runs in the background, so the result reflects only that
+        the message was handed over, not that Slack accepted it.
+
+        :returns: Always ``True``, so the rule's remaining actions run.
+        """
+        self.notify_slack(self.get_payload())
         return True
 
 
 class SlackAddForm(ActionAddForm):
     """An add form for the Slack Action."""
 
-    schema = ISlackAction
+    schema = ISlackAction  # type: ignore[assignment]
     label = _("Add Slack Action")
     description = _("Action to post a message to a Slack channel.")
     form_name = _("Configure element")
@@ -246,7 +274,7 @@ class SlackAddFormView(ContentRuleFormWrapper):
 class SlackEditForm(ActionEditForm):
     """An edit form for the slack action."""
 
-    schema = ISlackAction
+    schema = ISlackAction  # type: ignore[assignment]
     label = _("Edit Slack Action")
     description = _("Action to post a message to a Slack channel.")
     form_name = _("Configure element")
