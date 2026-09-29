@@ -1,1 +1,0 @@
-Reorganize the test suite, add end-to-end tests running a content rule with a Slack action on a real event, and require at least 95% test coverage. @ericof
