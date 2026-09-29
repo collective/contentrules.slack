@@ -34,7 +34,8 @@ Pick any event Plone content rules support — a page is published, content is r
 
 | contentrules.slack | Plone | Python |
 |---|---|---|
-| 3.x | 6.1, 6.2 | 3.10 to 3.14 |
+| 3.x | 6.2 | 3.10 to 3.14 |
+| 3.x | 6.1 | 3.10 to 3.13 |
 | 2.x | 6.0 | 3.8 to 3.11 |
 
 ## Installation

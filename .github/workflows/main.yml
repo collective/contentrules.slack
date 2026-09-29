@@ -29,6 +29,11 @@ jobs:
       matrix:
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
         plone-version: ['6.2-latest', '6.1-latest']
+        exclude:
+          # Plone 6.1 supports Python 3.10 to 3.13, and pins an lxml
+          # release with no Python 3.14 wheels.
+          - python-version: '3.14'
+            plone-version: '6.1-latest'
     with:
       python-version: ${{ matrix.python-version }}
       plone-version: ${{ matrix.plone-version }}
