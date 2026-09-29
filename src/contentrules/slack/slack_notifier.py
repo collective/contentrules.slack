@@ -4,8 +4,10 @@ Requests run in a background thread, so a slow or unreachable Slack never
 holds up the Plone request that triggered the notification.
 """
 
+from contentrules.slack import logger
 from contentrules.slack import settings
 from contentrules.slack.interfaces import ISlackNotifier
+from requests import RequestException
 from threading import Thread
 from typing import Any
 from typing import cast
@@ -89,20 +91,31 @@ class SlackNotifier:
         verify: bool = True,
         **payload: Any,
     ) -> None:
-        """Post the payload to the webhook.
+        """Post the payload to the webhook, logging any failure.
+
+        This runs in its own thread, where an exception would reach nobody
+        but ``stderr``. Failures -- an error status from Slack, a timeout, a
+        connection error -- are logged instead. The webhook URL is left out
+        of the message: it is the credential that allows posting.
 
         :param webhook_url: The Slack webhook URL.
         :param timeout: Seconds to wait for Slack before giving up.
         :param verify: Whether to verify SSL certificates.
         :param payload: Sent as the JSON payload of the request.
-        :raises requests.HTTPError: When Slack answers with an error status.
         """
-        requests.post(
-            webhook_url,
-            timeout=timeout,
-            verify=verify,
-            json=payload,
-        ).raise_for_status()
+        try:
+            requests.post(
+                webhook_url,
+                timeout=timeout,
+                verify=verify,
+                json=payload,
+            ).raise_for_status()
+        except RequestException as exc:
+            logger.error(
+                "Slack notification to channel %s failed: %s",
+                payload.get("channel", "(default)"),
+                exc.__class__.__name__,
+            )
 
     def _choose_webhook_url(self, webhook_url: str) -> str:
         """Return the webhook URL to use.

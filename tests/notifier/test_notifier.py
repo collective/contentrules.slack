@@ -143,7 +143,45 @@ class TestDoRequest:
             }
         ]
 
-    def test_error_status_raises(self, mock_requests):
-        mock_requests.status_code = 404
-        with pytest.raises(requests.HTTPError):
+    def test_success_logs_nothing(self, mock_requests, caplog):
+        SlackNotifier()._do_request(WEBHOOK_URL, 2, True, text="Foo")
+        assert caplog.records == []
+
+    @pytest.mark.parametrize(
+        "status_code,error,expected",
+        [
+            [404, None, "HTTPError"],
+            [200, requests.ConnectionError("refused"), "ConnectionError"],
+            [200, requests.Timeout("slow"), "Timeout"],
+        ],
+    )
+    def test_failure_is_logged(
+        self, mock_requests, caplog, status_code, error, expected
+    ):
+        mock_requests.status_code = status_code
+        mock_requests.error = error
+        SlackNotifier()._do_request(WEBHOOK_URL, 2, True, channel="#tests")
+        [record] = caplog.records
+        assert record.levelname == "ERROR"
+        assert record.name == "contentrules.slack"
+        assert record.getMessage() == (
+            f"Slack notification to channel #tests failed: {expected}"
+        )
+
+    def test_failure_log_names_default_channel(self, mock_requests, caplog):
+        """Without a channel, Slack posts to the webhook's own channel."""
+        mock_requests.status_code = 500
+        SlackNotifier()._do_request(WEBHOOK_URL, 2, True, text="Foo")
+        assert "channel (default)" in caplog.records[0].getMessage()
+
+    def test_failure_log_leaves_out_the_webhook(self, mock_requests, caplog):
+        """The webhook URL is the credential allowing anyone to post."""
+        mock_requests.status_code = 403
+        SlackNotifier()._do_request(WEBHOOK_URL, 2, True, text="Foo")
+        assert WEBHOOK_URL not in caplog.text
+
+    def test_other_errors_propagate(self, mock_requests):
+        """Only request failures are logged; a bug still raises."""
+        mock_requests.error = ValueError("bug")
+        with pytest.raises(ValueError):
             SlackNotifier()._do_request(WEBHOOK_URL, 2, True, text="Foo")

@@ -45,14 +45,19 @@ class RequestsRecorder:
     def __init__(self) -> None:
         self.posts: list[dict] = []
         self.status_code = 200
+        self.error: Exception | None = None
 
     def post(self, url: str, **kwargs) -> ResponseStub:
         """Record a post and answer with :attr:`status_code`.
 
         :param url: The URL posted to.
         :returns: A response stub.
+        :raises Exception: :attr:`error`, when set -- to simulate a timeout
+            or a connection error.
         """
         self.posts.append({"url": url, **kwargs})
+        if self.error is not None:
+            raise self.error
         return ResponseStub(self.status_code)
 
 

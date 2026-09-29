@@ -1,0 +1,1 @@
+Log failed Slack notifications -- an error status, a timeout or a connection error -- to the `contentrules.slack` logger, instead of losing them in the background thread. The webhook URL is left out of the log message. @ericof
