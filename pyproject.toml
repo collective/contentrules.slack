@@ -206,5 +206,8 @@ omit = [
   "src/contentrules/slack/locales/*.py",
 ]
 
+[tool.coverage.report]
+fail_under = 95
+
 [tool.zest-releaser]
 python-file-with-version = "src/contentrules/slack/__init__.py"
