@@ -14,7 +14,13 @@ permissions:
 
 jobs:
   config:
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip changelog') }}
+    # Dependabot updates need no news fragment. Its pull requests also carry
+    # the "skip changelog" label, but the author check does not depend on it.
+    if: >-
+      ${{
+        !contains(github.event.pull_request.labels.*.name, 'skip changelog')
+        && github.event.pull_request.user.login != 'dependabot[bot]'
+      }}
     uses: ./.github/workflows/config.yml
 
   checks:
