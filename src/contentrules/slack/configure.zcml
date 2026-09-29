@@ -6,17 +6,16 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <include package="plone.contentrules" />
-  <include
-      package="plone.contentrules"
-      file="meta.zcml"
-      />
 
+  <include file="dependencies.zcml" />
+
+  <include package=".actions" />
+
+  <!-- -*- extra stuff goes here -*- -->
   <utility
       factory=".slack_notifier.SlackNotifier"
       provides="contentrules.slack.interfaces.ISlackNotifier"
       />
 
-  <include package=".actions" />
 
 </configure>

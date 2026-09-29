@@ -5,21 +5,23 @@ from plone.app.testing import PloneSandboxLayer
 import contentrules.slack
 
 
-class CRSlackLayer(PloneSandboxLayer):
-
+class Layer(PloneSandboxLayer):
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        import plone.restapi
-
-        self.loadZCML(package=plone.restapi)
+        # Load any other ZCML that is required for your tests.
+        # The z3c.autoinclude feature is disabled in the Plone fixture base
+        # layer.
         self.loadZCML(package=contentrules.slack)
 
+    def setUpPloneSite(self, portal):
+        """Set up the Plone site for testing."""
+        pass
 
-CRSLACK_FIXTURE = CRSlackLayer()
 
+FIXTURE = Layer()
 
-CRSLACK_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(CRSLACK_FIXTURE,),
-    name="CRSlackLayer:IntegrationTesting",
+INTEGRATION_TESTING = IntegrationTesting(
+    bases=(FIXTURE,),
+    name="Contentrules.SlackLayer:IntegrationTesting",
 )

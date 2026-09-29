@@ -1,4 +1,4 @@
-from contentrules.slack.testing import CRSLACK_INTEGRATION_TESTING
+from contentrules.slack.testing import INTEGRATION_TESTING
 from plone import api
 from pytest_plone import fixtures_factory
 
@@ -8,7 +8,7 @@ import pytest
 pytest_plugins = ["pytest_plone"]
 
 
-globals().update(fixtures_factory(((CRSLACK_INTEGRATION_TESTING, "integration"),)))
+globals().update(fixtures_factory(((INTEGRATION_TESTING, "integration"),)))
 
 
 @pytest.fixture(autouse=True)

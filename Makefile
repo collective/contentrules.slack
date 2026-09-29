@@ -15,21 +15,35 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-PLONE6=6.0-latest
+# Python checks
+UV?=uv
+
+# installed?
+ifeq (, $(shell which $(UV) ))
+  $(error "UV=$(UV) not found in $(PATH)")
+endif
 
 BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
-CODE_QUALITY_VERSION=2.1.0
-ifndef LOG_LEVEL
-	LOG_LEVEL=INFO
+ifdef PLONE_VERSION
+PLONE_VERSION := $(PLONE_VERSION)
+else
+PLONE_VERSION := 6.2.2
 endif
-CURRENT_USER=$$(whoami)
-USER_INFO=$$(id -u ${CURRENT_USER}):$$(getent group ${CURRENT_USER}|cut -d: -f3)
-LINT=docker run --rm -e LOG_LEVEL="${LOG_LEVEL}" -v "${BACKEND_FOLDER}":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} check
-FORMAT=docker run --rm --user="${USER_INFO}" -e LOG_LEVEL="${LOG_LEVEL}" -v "${BACKEND_FOLDER}":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} format
 
-DOCS_DIR=${BACKEND_FOLDER}/docs
+ifdef CI
+UV_VENV_ARGS :=
+else
+UV_VENV_ARGS := --python=3.14
+endif
 
+VENV_FOLDER=$(BACKEND_FOLDER)/.venv
+export VIRTUAL_ENV=$(VENV_FOLDER)
+BIN_FOLDER=$(VENV_FOLDER)/bin
+
+# Environment variables to be exported
+export PYTHONWARNINGS := ignore
+export DOCKER_BUILDKIT := 1
 
 all: build
 
@@ -39,85 +53,94 @@ all: build
 help: ## This help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-bin/pip:
-	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
-	python3 -m venv .
-	bin/pip install -U pip wheel
+requirements-mxdev.txt: pyproject.toml mx.ini ## Generate constraints file
+	@echo "$(GREEN)==> Generate constraints file$(RESET)"
+	@echo '-c https://dist.plone.org/release/$(PLONE_VERSION)/constraints.txt' > requirements.txt
+	@uvx 'mxdev[uv]' -c mx.ini
 
-.PHONY: build-plone-6.0
-build-plone-6.0: bin/pip ## Build Plone 6.0
-	@echo "$(GREEN)==> Build with Plone 6.0$(RESET)"
-	bin/pip install Plone -c https://dist.plone.org/release/$(PLONE6)/constraints.txt
-	bin/pip install -r requirements.txt
-	bin/mkwsgiinstance -d . -u admin:admin
+$(VENV_FOLDER): requirements-mxdev.txt ## Install dependencies
+	@echo "$(GREEN)==> Install environment$(RESET)"
+	@if [[ -d "$(VENV_FOLDER)" ]]; then echo "$(YELLOW)==> Environment already exists at $(VENV_FOLDER)$(RESET)"; else uv venv $(UV_VENV_ARGS) $(VENV_FOLDER); fi
+	@uv pip install -r requirements-mxdev.txt
 
-.PHONY: build
-build: build-plone-6.0 ## Build Plone 6.0
+.PHONY: sync
+sync: $(VENV_FOLDER) ## Sync project dependencies
+	@echo "$(GREEN)==> Sync project dependencies$(RESET)"
+	@uv pip install -r requirements-mxdev.txt
+
+instance/etc/zope.ini instance/etc/zope.conf: instance.yaml ## Create instance configuration
+	@echo "$(GREEN)==> Create instance configuration$(RESET)"
+	@uvx cookiecutter -f --no-input -c 3.1.0 --config-file instance.yaml gh:plone/cookiecutter-zope-instance
+
+.PHONY: config
+config: instance/etc/zope.ini
+
+.PHONY: install
+install: $(VENV_FOLDER) config ## Install Plone and dependencies
+
 
 .PHONY: clean
-clean: ## Remove old virtualenv and creates a new one
+clean: ## Clean installation and instance (data left intact)
 	@echo "$(RED)==> Cleaning environment and build$(RESET)"
-	rm -rf bin lib lib64 include share etc var inituser pyvenv.cfg .installed.cfg
+	@rm -rf $(VENV_FOLDER) pyvenv.cfg .installed.cfg instance/etc .venv .pytest_cache .ruff_cache constraints* requirements*
 
-.PHONY: format
-format: ## Format the codebase according to our standards
-	@echo "$(GREEN)==> Format codebase$(RESET)"
-	$(FORMAT)
-
-.PHONY: lint
-lint: ## check code style
-	$(LINT)
-
-.PHONY: lint-black
-lint-black: ## validate black formating
-	$(LINT) black
-
-.PHONY: lint-flake8
-lint-flake8: ## validate black formating
-	$(LINT) flake8
-
-.PHONY: lint-isort
-lint-isort: ## validate using isort
-	$(LINT) isort
-
-.PHONY: lint-pyroma
-lint-pyroma: ## validate using pyroma
-	$(LINT) pyroma
-
-.PHONY: lint-zpretty
-lint-zpretty: ## validate ZCML/XML using zpretty
-	$(LINT) zpretty
-
-# i18n
-bin/i18ndude:	bin/pip
-	@echo "$(GREEN)==> Install translation tools$(RESET)"
-	bin/pip install i18ndude
-
-.PHONY: i18n
-i18n: bin/i18ndude ## Update locales
-	@echo "$(GREEN)==> Updating locales$(RESET)"
-	bin/update_cr_slack_locale
-
-.PHONY: test
-test: ## run tests
-	bin/pytest --disable-warnings
+.PHONY: remove-data
+remove-data: ## Remove all content
+	@echo "$(RED)==> Removing all content$(RESET)"
+	rm -rf $(VENV_FOLDER) instance/var
 
 .PHONY: start
-start: ## Start a Plone instance on localhost:8080
-	PYTHONWARNINGS=ignore ./bin/runwsgi etc/zope.ini
+start: $(VENV_FOLDER) instance/etc/zope.ini ## Start a Plone instance on localhost:8080
+	@$(BIN_FOLDER)/runwsgi instance/etc/zope.ini
 
+.PHONY: console
+console: $(VENV_FOLDER) instance/etc/zope.ini ## Start a console into a Plone instance
+	@$(BIN_FOLDER)/zconsole debug instance/etc/zope.conf
 
-# Docs
-bin/sphinx-build: bin/pip
-	bin/pip install -r requirements-docs.txt
+.PHONY: create-site
+create-site: $(VENV_FOLDER) instance/etc/zope.ini ## Create a new site from scratch
+	@$(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/create_site.py
 
-.PHONY: build-docs
-build-docs: bin/sphinx-build  ## Build the documentation
-	./bin/sphinx-build \
-		-b html $(DOCS_DIR) "$(DOCS_DIR)/_build/html"
+# QA
+.PHONY: lint
+lint: ## Check and fix code base according to Plone standards
+	@echo "$(GREEN)==> Lint codebase$(RESET)"
+	@uvx ruff@latest check --fix --config $(BACKEND_FOLDER)/pyproject.toml
+	@uvx pyroma@latest -d .
+	@uvx check-python-versions@latest .
+	@uvx zpretty@latest --check src
 
-.PHONY: livehtml
-livehtml: bin/sphinx-build  ## Rebuild Sphinx documentation on changes, with live-reload in the browser
-	./bin/sphinx-autobuild \
-		--ignore "*.swp" \
-		-b html $(DOCS_DIR) "$(DOCS_DIR)/_build/html"
+.PHONY: format
+format: ## Check and fix code base according to Plone standards
+	@echo "$(GREEN)==> Format codebase$(RESET)"
+	@uvx ruff@latest check --select I --fix --config $(BACKEND_FOLDER)/pyproject.toml
+	@uvx ruff@latest format --config $(BACKEND_FOLDER)/pyproject.toml
+	@uvx zpretty@latest -i src
+
+.PHONY: check
+check: format lint ## Check and fix code base according to Plone standards
+
+# i18n
+.PHONY: i18n
+i18n: $(VENV_FOLDER) ## Update locales
+	@echo "$(GREEN)==> Updating locales$(RESET)"
+	@$(BIN_FOLDER)/python -m contentrules.slack.locales
+
+# Tests
+.PHONY: test
+test: $(VENV_FOLDER) ## run tests
+	@$(BIN_FOLDER)/pytest
+
+.PHONY: test-coverage
+test-coverage: $(VENV_FOLDER) ## run tests with coverage
+	@$(BIN_FOLDER)/pytest --cov=contentrules.slack --cov-report term-missing
+
+## Add bobtemplates features (check bobtemplates.plone's documentation to get the list of available features)
+add: $(VENV_FOLDER)
+	@uvx plonecli add $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: release
+release: $(VENV_FOLDER) ## Create a release
+	@echo "$(GREEN)==> Create a release$(RESET)"
+	@uv pip install -e ".[release]"
+	@uv run fullrelease

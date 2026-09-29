@@ -1,0 +1,1 @@
+Modernize the package with the cookieplone `backend_addon` template: `pyproject.toml` with hatchling, and a Makefile using uv and mxdev. Declare the `prettyconf` dependency explicitly. @ericof
